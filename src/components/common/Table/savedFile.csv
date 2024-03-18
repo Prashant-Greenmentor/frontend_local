@@ -1,0 +1,4 @@
+fuel_input_data,evidence,is_active,created_at,modified_at,modified_by,month
+Gasoline,Receipt123,TRUE,2024-02-23T10:00:00Z,2024-02-23T10:00:00Z,123456,1
+Diesel,Receipt456,TRUE,2024-02-23T11:00:00Z,2024-02-23T11:00:00Z,789012,2
+Electricity,Receipt789,TRUE,2024-02-23T12:00:00Z,2024-02-23T12:00:00Z,345678,2
