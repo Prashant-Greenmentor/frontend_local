@@ -28,7 +28,9 @@ import Emissions from "../pages/energy/AnalyzeScope/Emissions";
 import CompanyDetailsInputPage from "../pages/UserAuthPages/CompanyDetailsInputPage";
 import CreatePasswordPage from "../pages/UserAuthPages/CreatePasswordPage";
 import UserAssignPage from "../pages/UserAuthPages/UserAssignPage";
-import ForgotPassword from "../pages/UserAuthPages/Components/ForgotPassword";
+import ForgotPassword from "../pages/UserAuthPages/ForgotPassword";
+import CheckInboxPage from "../pages/UserAuthPages/CheckInboxPage";
+import ResetPassword from "../pages/UserAuthPages/ResetPassword";
 
 
 function App() {
@@ -59,6 +61,14 @@ function App() {
         <Route
           path="/forgotPassword"
           element={<PublicRoute element={<ForgotPassword />} restricted={false} />}
+        />
+        <Route
+          path="/resetpassword"
+          element={<PublicRoute element={<ResetPassword />} restricted={false} />}
+        />
+        <Route
+          path="/checkInbox"
+          element={<PublicRoute element={<CheckInboxPage />} restricted={false} />}
         />
         <Route
           path="/dashboard"

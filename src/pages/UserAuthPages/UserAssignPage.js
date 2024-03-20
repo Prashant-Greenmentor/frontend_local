@@ -12,9 +12,9 @@ function UserAssignPage() {
         { id: 1, role: "Admin" },
         { id: 2, role: "Manager" },
         { id: 3, role: "Data Entrent" },
-        { id: 4, role: "User" }
+        { id: 4, role: "Data Approver" }
     ];
-
+   
     const handleEmailChange = (e) => {
         setEmail(e.target.value);
     }
@@ -41,13 +41,13 @@ function handleFinish(){
 
         <div className='h-screen flex flex-col justify-center items-center text-center space-y-5'>
             <h1 className='text-4xl mb-6'>You are admin by default</h1>
-            <div className='flex space-y-5 space-x-1  w-fit p-2 items-end justify-center '>
+            <div className='flex space-y-5 space-x-1  w-1/2 p-2 items-end justify-center '>
                 <div className='flex w-full items-end '>
-                    <div className='flex flex-col'>
+                    <div className='flex flex-col w-full'>
                         <label htmlFor="Adduser" className=" text-left">Add an user</label>
-                        <div className='flex border px-6 rounded'>
+                        <div className='flex border w-full rounded justify-between items-center text-center'>
                             <input 
-                                className='px-2 outline-none' 
+                                className='px-6 outline-none bg-none w-2/3' 
                                 type="text" 
                                 placeholder='Enter the email address' 
                                 value={email} 
@@ -55,7 +55,7 @@ function handleFinish(){
                             />
                             <select 
                                 name="user" 
-                                className='outline-none p-3' 
+                                className='outline-none p-3 w-1/4 ' 
                                 value={selectedRole} 
                                 onChange={handleRoleChange}
                             >
@@ -74,7 +74,7 @@ function handleFinish(){
                 <button  onClick={handleFinish} className='p-3 px-5 text-white font-bold bg-green-600 rounded'>Finish</button>
             </div>
         </div>
-            {isOpenPopUp && <SuccessPopUp text={"Role Assigned"} textColor={"Black"} bgColor={"#FFFFF"} />}
+            {isOpenPopUp && <SuccessPopUp text={"Role Assigned"} textColor={"#02AB6C"} bgColor={"#EEFFF9"} />}
       </>
     );
 }

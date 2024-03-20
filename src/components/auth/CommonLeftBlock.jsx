@@ -1,8 +1,10 @@
 import React from "react";
-import { ReactComponent as SEBIlogo } from "../../app/assets/SEBIlogo.svg";
+import { ReactComponent as SEBIlogoIcon } from "../../app/assets/SEBIlogo.svg";
+import { ReactComponent as TSFClogoIcon } from "../../app/assets/TCFDlogo.svg";
 import { ReactComponent as DataBaseLogo } from "../../app/assets/DataBaseLogo.svg";
 import { ReactComponent as GoldLogo } from "../../app/assets/GoldStanderdLogo.svg";
-// import { ReactComponent as TSFClogo } from "../../app/assets/TCFDlogo.svg";
+
+
 import TSFClogo  from "../../app/assets/Tcfd.png";
 import GRILogo  from "../../app/assets/GRILogo.png";
 import GreenHouseGasProtocol  from "../../app/assets/GreenHouseGasProtocol.png";
@@ -20,7 +22,7 @@ function CommonLeftBlock() {
         </p>
 
         <div className="grid grid-cols-2 gap-4 mt-5 p-10">
-          <SEBIlogo />
+          {/* <GoldLogo /> */}
           <img src={GRILogo} alt="GRILogo"/>
           <img src={GreenHouseGasProtocol} alt="greenhousegasProtocol"/>
           <img src={GoldStanderdLogo} alt="GoldStanderdLogo"/>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import Header from "../../components/common/Header";
 import { ReactComponent as DownloadIcon } from "../../app/assets/DownloadIcon.svg";
+import { ReactComponent as BRSR } from "../../app/assets/BRSRIcon.svg";
 import axios from 'axios';
 
 // Set the worker source for PDF.js
@@ -56,7 +57,7 @@ function Index() {
 
   return (
     <div className="h-screen">
-      <Header scope={""} pageTitle={"BRSR"} />
+      <Header PageIcon={BRSR} pageTitle={"BRSR"} />
       <div className="mt-4 flex justify-end px-5" id="BRSR">
         <div
           onClick={handleDownload}

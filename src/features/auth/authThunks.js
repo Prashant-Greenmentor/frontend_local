@@ -2,6 +2,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../services/api";
 import { setTokens } from "./authSlice";
+import { toast } from "react-toastify";
+import { setIsLoading } from "../common/commonSlice";
 
 export const refreshTokens = createAsyncThunk(
   "auth/refreshTokens",
@@ -26,7 +28,7 @@ export const refreshTokens = createAsyncThunk(
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async ({ username, password }, { dispatch }) => {
-    console.log(username,password)
+    dispatch(setIsLoading(true))
     try {
       // Call the login API endpoint with username and password
       const response = await api.post("/login-user", {
@@ -46,6 +48,51 @@ export const loginUser = createAsyncThunk(
       // Handle login failure
       console.error("Login failed:", error);
       throw error;
+    } finally{
+      dispatch(setIsLoading(false))
+    }
+  }
+);
+export const createPassword = createAsyncThunk(
+  "auth/createPassword",
+  async (data, { dispatch }) => {
+    dispatch(setIsLoading(true))
+    try {
+      // Call the login API endpoint with username and password
+      const response = await api.post("/create-password", data);
+
+      if(response.success){
+        toast("Password created successfully")
+      }
+     
+
+      
+    } catch (error) {
+      // Handle login failure
+      console.error(" failed:", error);
+      throw error;
+    } finally{
+      dispatch(setIsLoading(false))
+    }
+  }
+);
+export const postCompanyDetails = createAsyncThunk(
+  "auth/postCompanyDetails",
+  async (data, { dispatch }) => {
+    dispatch(setIsLoading(true))
+    try {
+      // Call the login API endpoint with username and password
+      const response = await api.post("/company-details", data);
+      if(response.success){
+        toast("Company details added Successfully")
+      }
+      return response
+    } catch (error) {
+      // Handle login failure
+      console.error(" failed:", error);
+      throw error;
+    } finally{
+      dispatch(setIsLoading(false))
     }
   }
 );

@@ -1,6 +1,17 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { postCompanyDetails } from "../../features/auth/authThunks";
 const CompanyDetailsInputForm = () => {
+  const [yearOfIncorporationoptions]=useState( [
+    { id: 1, yearOfIncorporation: 2000 },
+    { id: 2, yearOfIncorporation: 1995 },
+    { id: 3, yearOfIncorporation: 2010 },
+    { id: 4, yearOfIncorporation: 1980 },
+   
+  ]
+  
+  )
   const [formData, setFormData] = useState({
     companyRegistrationNumber: "",
     companyName:"",
@@ -15,7 +26,7 @@ const CompanyDetailsInputForm = () => {
  
  
   const Navigate = useNavigate();
-
+const dispatch =useDispatch()
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
@@ -32,11 +43,16 @@ const CompanyDetailsInputForm = () => {
     }));
   };
 
-  const handleContinue = (e) => {
+  const handleContinue =async (e) => {
     e.preventDefault();
-    console.log(formData);
+    try {
+      await dispatch(postCompanyDetails(formData))
+        Navigate("/userasign");
     
-    Navigate("/userasign");
+      
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   return (
@@ -54,7 +70,7 @@ const CompanyDetailsInputForm = () => {
               htmlFor="companyName"
               className="block mb-1 text-gray-600"
             >
-              Company Name
+              Company Name<span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -72,7 +88,7 @@ const CompanyDetailsInputForm = () => {
               htmlFor="companyRegistrationNumber"
               className="block mb-1 text-gray-600"
             >
-              Company Registration Number
+              Company Registration Number<span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -90,22 +106,26 @@ const CompanyDetailsInputForm = () => {
               htmlFor="yearOfIncorporation"
               className="block mb-1 text-gray-600"
             >
-              Year of Incorporation
+              Year of Incorporation<span className="text-red-500">*</span>
             </label>
-            <input
-              type="text"
+            <select
               id="yearOfIncorporation"
               name="yearOfIncorporation"
               value={formData.yearOfIncorporation}
               onChange={handleInputChange}
               className="w-full p-2 border outline-none border-gray-300 rounded focus:border-green-500 focus:ring focus:ring-green-300 focus:ring-opacity-50"
-              placeholder="Year of Incorporation"
               required
-            />
+            >
+            <option value="">Select year</option>
+             {yearOfIncorporationoptions.map((item)=>{
+              return <option key={`${item.id}`}>{item.yearOfIncorporation}</option>;
+             })}
+             
+            </select> 
           </div>
           <div>
             <label htmlFor="industry" className="block mb-1 text-gray-600">
-              Industry
+              Industry<span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -123,7 +143,7 @@ const CompanyDetailsInputForm = () => {
               htmlFor="countryOfRegistration"
               className="block mb-1 text-gray-600"
             >
-              Country of Registration
+              Country of Registration<span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -138,7 +158,7 @@ const CompanyDetailsInputForm = () => {
           </div>
           <div>
             <label htmlFor="fiscalYear" className="block mb-1 text-gray-600">
-              Fiscal Year
+              Fiscal Year<span className="text-red-500">*</span>
             </label>
              <select
               id="fiscalYear"
@@ -149,8 +169,8 @@ const CompanyDetailsInputForm = () => {
               required
             >
               <option value="">Select fiscal Year</option>
-              <option value="1">Jan to Dec</option>
-              <option value="1">Apr to March</option>
+              <option value="1">Jan-Dec</option>
+              <option value="1">Apr-March</option>
              
             </select> 
            
@@ -158,7 +178,7 @@ const CompanyDetailsInputForm = () => {
           
           <div>
             <label htmlFor="logo" className="block mb-1 text-gray-600">
-              Logo
+              Logo <span className="text-red-500">*</span>
             </label>
             <input
               type="file"
@@ -166,10 +186,13 @@ const CompanyDetailsInputForm = () => {
               name="logo"
               onChange={handleFileChange}
               className="w-full p-2 border outline-none border-gray-300 rounded focus:border-green-500 focus:ring focus:ring-green-300 focus:ring-opacity-50"
+              required
             />
+
+
           </div>
           
-        <div className="mt-4 flex justify-end">
+        <div className="mt-4 flex justify-start">
           <button
             type="submit"
             className="w-full lg:w-auto px-10 py-3 bg-[#02AB6C] text-white rounded hover:bg-[#02AB6C] font-bold transition-all duration-300 ease-in-out transform hover:scale-105 mt-5"

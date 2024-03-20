@@ -3,10 +3,55 @@ import { useDispatch } from "react-redux";
 // import { updatePassword } from "../../features/auth/authThunks";
 import { useNavigate } from "react-router-dom";
 import SuccessPopUp from "../../pages/UserAuthPages/Components/SuccessPopUp";
+import { createPassword } from "../../features/auth/authThunks";
+import OTPPopup from "../../pages/UserAuthPages/Components/OtpPopup";
+import { toast } from "react-toastify";
 const CreatePasswordForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isOpenPopUp, setisOpenPopUp] = useState(false);
+  const [isOTPVisible, setOTPVisible] = useState(false);
+  const [otp, setOTP] = useState("");
+
+  // Function to open the OTP popup
+  const openOTPModal = () => {
+    setOTPVisible(true);
+  };
+
+  // Function to close the OTP popup
+  const closeOTPModal = () => {
+    setOTPVisible(false);
+  };
+
+  // Function to handle OTP submission
+  const handleOTPSubmit = async (otp) => {
+    if (otp == "1234") {
+      try {
+        // Dispatch the update password thunk with the password data
+        await dispatch(
+          createPassword({
+            currentPassword: passwordData.currentPassword,
+            newPassword: passwordData.newPassword,
+          })
+        );
+        setisOpenPopUp(true);
+        setTimeout(() => {
+          setisOpenPopUp(false);
+          closeOTPModal();
+          navigate("/company-details");
+        }, 1000);
+        // After successful password update, you can handle the response or redirect the user
+      } catch (error) {
+        // Handle password update failure
+        closeOTPModal();
+        console.error("Password update failed:", error);
+      }
+    } else {
+      toast("Wrong Otp");
+      
+    }
+    setOTP(otp);
+  };
   // State for password inputs
   const [passwordData, setPasswordData] = useState({
     currentPassword: "",
@@ -24,21 +69,7 @@ const CreatePasswordForm = () => {
 
   const handleUpdatePassword = async (e) => {
     e.preventDefault();
-    try {
-        setisOpenPopUp(true)
-        setTimeout(()=>{
-            navigate("/company-details");
-            setisOpenPopUp(false)
-
-        },1000)
-      // Dispatch the update password thunk with the password data
-      //   await dispatch(updatePassword(passwordData));
-
-      // After successful password update, you can handle the response or redirect the user
-    } catch (error) {
-      // Handle password update failure
-      console.error("Password update failed:", error);
-    }
+    openOTPModal();
   };
 
   return (
@@ -114,7 +145,18 @@ const CreatePasswordForm = () => {
           </form>
         </div>
       </div>
-      {isOpenPopUp && <SuccessPopUp text={"Password Updated"} textColor={"#FFFFFF"} bgColor={"#02AB6C"} />}
+      {isOpenPopUp && (
+        <SuccessPopUp
+          text={"Password Updated"}
+          textColor={"#02AB6C"}
+          bgColor={"#EEFFF9"}
+        />
+      )}
+      <OTPPopup
+        isOpen={isOTPVisible}
+        onClose={closeOTPModal}
+        onSubmit={handleOTPSubmit}
+      />
     </>
   );
 };

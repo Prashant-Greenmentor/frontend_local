@@ -75,7 +75,7 @@ const LoginForm = () => {
           </div>
           <div className="">
             <span className="text-[#02AB6C]">
-              Track, Measure, Report today!
+            Track, Measure and Report Today!
             </span>
           </div>
           <div className="flex flex-col lg:flex-row justify-start items-center space-y-2 lg:space-y-0 lg:space-x-2">
