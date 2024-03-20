@@ -837,8 +837,8 @@ const ElectricityData=[
 
 const calculateRenewableEnergyData = (data, year) => {
   // Filter data for renewable and non-renewable energy
-  const filteredDataRenewable = data.filter(entry => entry.year === year && entry.source_type === 'renewable');
-  const filteredDataNonRenewable = data.filter(entry => entry.year === year && entry.source_type === 'non-renewable');
+  const filteredDataRenewable = data.filter(entry => entry.year === year && entry.source_type?.toLowerCase() === 'renewable');
+  const filteredDataNonRenewable = data.filter(entry => entry.year === year && entry.source_type?.toLowerCase() === 'non-renewable');
 
   // Calculate total renewable energy for each site
   const totalRenewableEnergyBySite = {};
@@ -970,65 +970,7 @@ export const formatText = (text) => {
 
   return formattedText;
 };
-// function processIntervalLevelData(data, timeInterval,filterBy) {
-  
-//   let filteredData = data?.filter(entry => {
-//     for (let key in filterBy) {
-       
-//         if (filterBy[key] !== '' && entry[key] !== filterBy[key]) {
-//             return false;
-//         }
-//     }
-//     return true;
-// });
 
-//     let processedData = {};
-  
-//     filteredData.forEach((entry) => {
-//       let { year, quarter, total_co2e_kg } = entry;
-//       total_co2e_kg=Number(total_co2e_kg)
-  
-//       switch (timeInterval) {
-//         case "Year":
-//           if (!processedData[year]) {
-//             processedData[year] = {
-//               emissionFactors: [],
-//               totalEmissionFactor: 0,
-//               totalEmission: 0,
-//             };
-//           }
-//           processedData[year].emissionFactors.push(total_co2e_kg);
-//           processedData[year].totalEmission += total_co2e_kg;
-//           break;
-  
-//         case "Quarter":
-//           const quarterKey = `${year}-Q${quarter}`;
-//           if (!processedData[quarterKey]) {
-//             processedData[quarterKey] = {
-//               emissionFactors: [],
-//               totalEmissionFactor: 0,
-//               totalEmission: 0,
-//             };
-//           }
-//           processedData[quarterKey].emissionFactors.push(total_co2e_kg);
-//           processedData[quarterKey].totalEmission += total_co2e_kg;
-//           break;
-  
-//         default:
-//           break;
-//       }
-//     });
-  
-//     // Calculate total emission factors
-//     for (const key in processedData) {
-//       const factors = processedData[key].emissionFactors.map(Number);
-//       let sum = factors.reduce((acc, curr) => acc + curr, 0);
-//       processedData[key].totalEmissionFactor = sum.toFixed();
-//     }
-  
-//     // console.log("processed data:-", processedData);
-//     return processedData;
-//   }
   
   // current year and last year total emission
 function currentYearLastYearEmissionDetail(data,currentYear=2023){
@@ -1070,8 +1012,8 @@ function calculateRenewableEnergyUsageChange(data,currentYear) {
   
 
   
-  const currentYearData = data?.filter(entry => entry.year ===currentYear);
-  const previousYearData = data?.filter(entry => entry.year ===currentYear - 1);
+  const currentYearData = data?.filter(entry => entry.year===currentYear);
+  const previousYearData = data?.filter(entry => entry.year===currentYear - 1);
 
   const totalUsageCurrentYear = currentYearData.reduce((total, entry) => total + entry.usage_in_kwh, 0);
   const totalUsagePreviousYear = previousYearData.reduce((total, entry) => total + entry.usage_in_kwh, 0);
@@ -1510,85 +1452,7 @@ const generateChartOption = (titleText, legendData, xAxisLabels, series) => {
     series: series,
   };
 };
-// const generateStackedChartOptions = (
-//   chartData,
-//   currentFinancialYear,
-//   typeBreakdown,
-//   legends,
-//   xAxisData,
-//   series
-// ) => {
-// const CurrentYearChartData=chartData.filter(item=>item.year===currentFinancialYear);
 
-//   return {
-//     title: { text: "Sitewise Emissions ", left: "center" },
-//     tooltip: {
-//       trigger: "item",
-//       formatter: function (params) {
-//         let tooltipContent = `${
-//           params.seriesName
-//         }<br/>Emission: ${params.value.toFixed()} Co2e<br/>`;
-
-//         if (params.seriesName !== "Total") {
-//           const entry = CurrentYearChartData?.filter(
-//             (item) =>
-//               item[typeBreakdown] === params.seriesName 
-//           );
-
-//           let totaluses = entry.reduce(
-//             (acc, curr) => acc + Number(curr["usage_in_kwh"]),
-//             0
-//           );
-
-//           let totalemission = entry.reduce(
-//             (acc, curr) => acc + Number(curr["total_co2e_kg"]),
-//             0
-//           );
-//           if (entry) {
-//             tooltipContent += `Energy Usage: ${totaluses} kwh<br/>`;
-//             tooltipContent += `Emission Factor: ${(
-//               totalemission / totaluses
-//             ).toFixed(2)}<br/>`;
-//           }
-//           return tooltipContent;
-//         } else {
-//           let totaluses = CurrentYearChartData?.reduce(
-//             (acc, curr) => acc + Number(curr["usage_in_kwh"]),
-//             0
-//           );
-//           let emission_factor = CurrentYearChartData?.reduce(
-//             (acc, curr) => acc + Number(curr["total_co2e_kg"]),
-//             0
-//           );
-
-//           tooltipContent += `Energy Usage: ${totaluses.toFixed()} kwh<br/>`;
-//           tooltipContent += `Emission Factor: ${emission_factor.toFixed(
-//             4
-//           )}<br/>`;
-
-//           return tooltipContent;
-//         }
-//       },
-//     },
-//     legend: {
-//       data: [...legends],
-//       top: "bottom",
-//     },
-//     xAxis: {
-//       type: "category",
-//       data: xAxisData,
-//     },
-
-//     yAxis: {
-//       type: "value",
-//       axisLabel: {
-//         formatter: "{value} CO2e",
-//       },
-//     },
-
-//     series: series,
-//   };
-// };
 const generateStackedChartOptions = (
   chartData,
   currentFinancialYear,
@@ -1647,7 +1511,7 @@ const generateStackedChartOptions = (
             }
           }
         } else if (params.seriesType === 'line' && params.seriesName === 'Renewable Energy Usage') {
-          const renewableEntries = currentYearChartData.filter(item => item.site === params.name&&item.source_type ==='renewable');
+          const renewableEntries = currentYearChartData.filter(item => item.site === params.name&&item.source_type?.toLowerCase() ==='renewable');
           const sumCurrentYearEnergyUses = renewableEntries.reduce((sum, entry) => {
             if (entry.year === currentFinancialYear) {
               sum += parseFloat(entry.usage_in_kwh);
@@ -1687,115 +1551,9 @@ const generateStackedChartOptions = (
     }),
   };
 };
-// const transformdataForSunburst = (data,currentFinancialYear) => {
-//   const currentYearChartData = data.filter(item => item.year === currentFinancialYear);
-//   const modules = {};
 
-//   currentYearChartData.forEach((entry) => {
-//     const { module, sub_module, total_co2e_kg } = entry;
-//     if (!modules[module]) {
-//       modules[module] = {
-//         name: module,
-//         children: [],
-//       };
-//     }
-//     modules[module].children.push({
-//       name: sub_module,
-//       value: total_co2e_kg,
-//     });
-//   });
-
-//   const transformedData = Object.values(modules);
-
-//   return transformedData;
-// };
-
-
-// const generateOptionforSunburst = (data, currentFinancialYear) => {
-//   const transformedData = transformdataForSunburst(data, currentFinancialYear);
-
-//   return {
-//     tooltip: {},
-//     title: {
-//       text: "Scope wise emission split",
-//       left: "center",
-//       // margin:20
-//     },
-//     series: {
-//       type: "sunburst",
-//       data: transformedData,
-//       radius: [60, "90%"],
-//       label: {
-//         show: true,
-//         formatter: function (params) {
-//           const parentValue = params?.data?.value || 1; // Prevent division by zero
-//           const percent = ((params.value / parentValue) * 100).toFixed(2);
-//           return `${params.name} ${percent}%`;
-//         },
-//         rotate: "radial",
-//       },
-//       itemStyle: {
-//         borderRadius: 5,
-//         borderWidth: 2,
-//       }
-//     },
-//   };
-// };
-// const generateOptionforSunburst = (data, currentFinancialYear) => {
-//   const transformedData = transformdataForSunburst(data, currentFinancialYear);
-
-//   // Calculate the total value for each parent block
-//   const calculateTotalValue = (node) => {
-//     if (!node || !node.children || node.children.length === 0) {
-//       return node ? node.value : 0;
-//     }
-//     return node.children.reduce((acc, child) => acc + calculateTotalValue(child), 0);
-//   };
-
-//   const calculatePercentage = (value, total) => {
-//     const percentage = (value / total) * 100;
-//     return percentage.toFixed(2);
-//   };
-
-//   // Calculate total value for the root node
-//   const totalValue = calculateTotalValue(transformedData[1]);
-
-//   // Add percentage information to each block
-//   const addPercentage = (node, parentValue) => {
-//     if (!node) return;
-//     const totalValueForNode = calculateTotalValue(node);
-//     const percentage = calculatePercentage(totalValueForNode, parentValue);
-//     node.name += ` (${percentage}%)`;
-//     if (node.children) {
-//       node.children.forEach(child => addPercentage(child, totalValueForNode));
-//     }
-//   };
-
-//   addPercentage(transformedData[1], totalValue);
-
-//   return {
-//     tooltip: {},
-//     title: {
-//       text: "Scope wise emission split",
-//       left: "center",
-//     },
-//     series: {
-//       type: "sunburst",
-//       data: transformedData,
-//       radius: [60, "90%"],
-//       label: {
-//         show: true,
-//         rotate: "radial",
-//       },
-//       itemStyle: {
-//         borderRadius: 5,
-//         borderWidth: 2,
-//       }
-//     },
-//   };
-// };
-
-const generateOptionforSunburst = (data, currentFinancialYear) => {
+const generateOptionforSunburst = (InputData, currentFinancialYear) => {
+  const data = InputData.filter(item => item.year === currentFinancialYear);   /// currentFinancialYear filter 
   if (!Array.isArray(data) || data.length === 0) {
     console.error("Invalid or empty data provided");
     return {}; // Return empty option object if data is invalid or empty
@@ -1851,6 +1609,14 @@ const generateOptionforSunburst = (data, currentFinancialYear) => {
   // Generate option for the sunburst chart
   const option = {
     tooltip: {},
+    // visualMap: {
+      // type: 'piecewise',
+      // min: 0,
+      // max: 50000,
+      // inRange: {
+      //   color: ['#2F93C8', '#AEC48F', '#FFDB5C', '#F98862']
+      // }
+    // },
     title: {
       text: "Scope wise emission split",
       left: "center",
@@ -1858,14 +1624,15 @@ const generateOptionforSunburst = (data, currentFinancialYear) => {
     series: {
       type: "sunburst",
       data: transformDataForSunburst(data),
-      radius: [60, "90%"],
+      radius: [80, "90%"],
       label: {
         show: true,
         formatter: (params) => {
           return `${params.name}`;
         },
         rotate: "radial",
-        fontSize: 10, 
+        // fontSize: 10, 
+        fontWeight:600,
       },
       itemStyle: {
         borderRadius: 5,

@@ -3,12 +3,14 @@ import Header from '../../../components/common/Header'
 import AnalyzeHeader from '../../../components/Analyze/AnalyzeHeader'
 
 import { useDispatch, useSelector } from 'react-redux'
-import Filter from '../../Charts(R and D)/components/Filter'
+import Filter from '../../VisualizationFeature/components/Filter'
 import { ReactComponent as FilterMenuIcon } from "../../../app/assets/FilterMenuIcon.svg";
 import { ReactComponent as EmissionIcon } from "../../../app/assets/GreenhouseEffect.svg";
-import { fetchChartOverAllDataThunk } from '../../Charts(R and D)/Redux/chartthunk'
-import { calculateEnergyUsageChange, calculateRenewableEnergyUsageChange, currentYearLastYearEmissionDetail } from '../../Charts(R and D)/Redux/Processdata'
-import MainOverAll from '../../Charts(R and D)/components/MainOverAll'
+import { fetchChartOverAllDataThunk } from '../../VisualizationFeature/Redux/chartthunk'
+import { calculateEnergyUsageChange, calculateRenewableEnergyUsageChange, currentYearLastYearEmissionDetail } from '../../VisualizationFeature/Redux/Processdata'
+import MainOverAll from '../../VisualizationFeature/components/MainOverAll'
+
+
 
 
 
@@ -19,9 +21,9 @@ function Emissions() {
     const [renewableEnergyChange,setrenewableEnergy]=useState({})
     const [EnergyChange,setEnergyChange]=useState({})
     const [chartDataArray] = useState([
-      { title: "Current Year Emissions by Scope 1", dataKey: "sub_module" },
-      { title: "Current Year Emissions by Scope 2", dataKey: "sub_module" },
-      { title: "Current Year Emissions by Scope 3", dataKey: "sub_module" },
+      // { title: "Current Year Emissions by Scope 1", dataKey: "sub_module" },// sequence matter
+      // { title: "Current Year Emissions by Scope 2", dataKey: "sub_module" },
+      // { title: "Current Year Emissions by Scope 3", dataKey: "sub_module" },
       { title: "Current Year Emissions by Site", dataKey: "site" },
       { title: "Current Year Energy Usage", dataKey: "source_type" },
     ]);
@@ -113,7 +115,7 @@ function Emissions() {
         }
     ];
     useEffect(()=>{
-      setEmissonChange(currentYearLastYearEmissionDetail(dataForCurrentYearChange,2023))
+      setEmissonChange(currentYearLastYearEmissionDetail(dataForCurrentYearChange,2023))   ///  currentFinancialYear 
       setrenewableEnergy(calculateRenewableEnergyUsageChange(dataForCurrentYearChange,2023))
       setEnergyChange(calculateEnergyUsageChange(dataForCurrentYearChange,2023))
     },[overAllData,dataForCurrentYearChange])

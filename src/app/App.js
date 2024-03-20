@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import PrivateRoute from "../components/common/PrivateRoute";
 import PublicRoute from "../components/common/PublicRoute";
 import HomePage from "../pages/HomePage";
-import LoginPage from "../pages/LoginPage";
+import LoginPage from "../pages/UserAuthPages/LoginPage";
 import DashboardPage from "../pages/DashboardPage";
 import { useDispatch, useSelector } from "react-redux";
 import { refreshTokens } from "../features/auth/authThunks";
@@ -25,6 +25,10 @@ import Offset from "../pages/Offset";
 import Reduce from "../pages/Reduce";
 import AnalyzeScope1 from "../pages/energy/AnalyzeScope/AnalyzeScope1";
 import Emissions from "../pages/energy/AnalyzeScope/Emissions";
+import CompanyDetailsInputPage from "../pages/UserAuthPages/CompanyDetailsInputPage";
+import CreatePasswordPage from "../pages/UserAuthPages/CreatePasswordPage";
+import UserAssignPage from "../pages/UserAuthPages/UserAssignPage";
+import ForgotPassword from "../pages/UserAuthPages/Components/ForgotPassword";
 
 
 function App() {
@@ -46,15 +50,31 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={<PublicRoute element={<HomePage />} restricted={false} />}
+          element={<PublicRoute element={<HomePage />} restricted={true} />}
         />
         <Route
           path="/login"
-          element={<PublicRoute element={<LoginPage />} restricted={true} />}
+          element={<PublicRoute element={<LoginPage />} restricted={false} />}
+        />
+        <Route
+          path="/forgotPassword"
+          element={<PublicRoute element={<ForgotPassword />} restricted={false} />}
         />
         <Route
           path="/dashboard"
           element={<PrivateRoute element={DashboardPage} />}
+        />
+        <Route
+          path="/create-password"
+          element={<PublicRoute element={<CreatePasswordPage/>} restricted={false} />}
+        />
+        <Route
+          path="/userasign"
+          element={<PublicRoute element={<UserAssignPage/>} restricted={false} />}
+        />
+        <Route
+          path="/company-details"
+          element={<PublicRoute element={<CompanyDetailsInputPage/>} restricted={false} />}
         />
         <Route
           path="/energy/fuel"

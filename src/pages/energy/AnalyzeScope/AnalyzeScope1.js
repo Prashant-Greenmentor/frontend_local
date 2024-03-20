@@ -3,16 +3,16 @@ import React, { useEffect, useState } from "react";
 import { ReactComponent as FilterMenuIcon } from "../../../app/assets/FilterMenuIcon.svg";
 import { ReactComponent as FuelIcon } from "../../../app/assets/FuelIcon.svg";
 import Header from "../../../components/common/Header";
-import Main from "../../Charts(R and D)/components/Main"
+import Main from "../../VisualizationFeature/components/Main"
 import AnalyzeHeader from "../../../components/Analyze/AnalyzeHeader";
 
 import { 
 
   useDispatch,
    useSelector } from "react-redux";
-import { calculateEnergyUsageChange, calculateRenewableEnergyUsageChange, currentYearLastYearEmissionDetail } from "../../Charts(R and D)/Redux/Processdata";
-import Filter from "../../Charts(R and D)/components/Filter";
-import { fetchChartDataThunk } from "../../Charts(R and D)/Redux/chartthunk";
+import { calculateEnergyUsageChange, calculateRenewableEnergyUsageChange, currentYearLastYearEmissionDetail } from "../../VisualizationFeature/Redux/Processdata";
+import Filter from "../../VisualizationFeature/components/Filter";
+import { fetchChartDataThunk } from "../../VisualizationFeature/Redux/chartthunk";
 function AnalyzeScope1() {
   const dispatch = useDispatch();
   const [StackBreakDown] = useState(["use_type", "fuel_type"]);

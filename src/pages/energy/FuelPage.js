@@ -3,11 +3,11 @@ import Header from "../../components/common/Header";
 import UserIcon from "../../app/assets/UserIcon.svg";
 import { ReactComponent as FuelIcon } from "../../app/assets/FuelIcon.svg";
 import { ReactComponent as PurchasedIcon } from "../../app/assets/PurchasedIcon.svg";
+// import { ReactComponent as InventoryIcon } from "../../app/assets/InventoryIcon.svg";
 import { ReactComponent as CopyIcon } from "../../app/assets/CopyIcon.svg";
 import { ReactComponent as PencilIcon } from "../../app/assets/PencilIcon.svg";
 import { ReactComponent as AddIconBig } from "../../app/assets/AddIconBig.svg";
 import { ReactComponent as DownloadIcon } from "../../app/assets/DownloadIcon.svg";
-import { ReactComponent as InventoryIcon } from "../../app/assets/InventoryIcon.svg";
 import Table from "../../components/common/Table/Table";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
@@ -75,11 +75,15 @@ const FuelPage = () => {
   const [actionType, setActionType] = useState(null);
   const [selectedRowData, setSelectedRowData] = useState(null);
   const [isEditCopyFormOpen, setIsEditCopyFormOpen] = useState(false);
-
+  // console.log(fuelRecords)
 
   // Function to handle editing a row
   const handleEdit = (row) => {
-
+    // dispatch(fetchCurrencyData());
+    // dispatch(fetchSiteData());
+    // dispatch(fetchFuelTypeData());
+    // dispatch(fetchUnitData());
+    // dispatch(fetchUseTypeData());
     setActionType("edit")
     setSelectedRowData(row); // Set the selected row data
     setIsEditCopyFormOpen(true); // Open the edit form
@@ -87,7 +91,11 @@ const FuelPage = () => {
 
   // Function to handle copying a row
   const handleCopy = (row) => {
-
+    // dispatch(fetchCurrencyData());
+    // dispatch(fetchSiteData());
+    // dispatch(fetchFuelTypeData());
+    // dispatch(fetchUnitData());
+    // dispatch(fetchUseTypeData());
     setActionType("copy");
     setSelectedRowData(row);
     setIsEditCopyFormOpen(true); // Open the copy form
@@ -128,7 +136,11 @@ const FuelPage = () => {
 
   const openPopupForm = (fuelRecordType) => {
     if (fuelRecordType === 1) {
-
+      // dispatch(fetchCurrencyData());
+      // dispatch(fetchSiteData());
+      // dispatch(fetchFuelTypeData());
+      // dispatch(fetchUnitData());
+      // dispatch(fetchUseTypeData());
       setPurchaseFormOpen(true);
     } else {
     }
@@ -326,7 +338,7 @@ useEffect(()=>{
               <PurchasedIcon />
               <span className="px-2">Purchased fuel</span>
             </button>
-         <button
+            {/* <button
               className={`flex border items-center rounded-md mr-4 cursor-pointer px-2 ${
                 fuelRecordType === 2
                   ? "border-green-600 focus:bg-green-600 text-white white-svg bg-green-600"
@@ -336,7 +348,7 @@ useEffect(()=>{
             >
               <InventoryIcon />
               <span className="px-2">Inventory fuel</span>
-            </button> 
+            </button> */}
           </div>
           <div className="flex"></div>
         </div>

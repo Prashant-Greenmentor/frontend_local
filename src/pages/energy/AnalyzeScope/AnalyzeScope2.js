@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { ReactComponent as FilterMenuIcon } from "../../../app/assets/FilterMenuIcon.svg";
 import { ReactComponent as ElectricityIcon } from "../../../app/assets/ElectricityIcon.svg";
 import Header from "../../../components/common/Header";
-import Main from "../../Charts(R and D)/components/Main"
+import Main from "../../VisualizationFeature/components/Main"
 import AnalyzeHeader from "../../../components/Analyze/AnalyzeHeader";
 
 
 import { useDispatch, useSelector } from "react-redux";
-import { calculateEnergyUsageChange, calculateRenewableEnergyUsageChange, currentYearLastYearEmissionDetail } from "../../Charts(R and D)/Redux/Processdata";
-import Filter from "../../Charts(R and D)/components/Filter";
-import { fetchChartDataThunk, fetchChartElectricityDataThunk } from "../../Charts(R and D)/Redux/chartthunk";
+import { calculateEnergyUsageChange, calculateRenewableEnergyUsageChange, currentYearLastYearEmissionDetail } from "../../VisualizationFeature/Redux/Processdata";
+import Filter from "../../VisualizationFeature/components/Filter";
+import { fetchChartElectricityDataThunk } from "../../VisualizationFeature/Redux/chartthunk";
 
 function AnalyzeScope2() {
   const dispatch = useDispatch();
@@ -104,14 +104,14 @@ function AnalyzeScope2() {
               <Filter
                 label="Electricity Source"
                 options={ElectricitySourceOptions}
-                selectedValue={filterBy.fuel_type}
+                selectedValue={filterBy.electricity_source}
                 onChange={(value) => handleFilterChange('electricity_source', value)}
               />
            
               <Filter
                 label="Transaction Type"
                 options={transactionTypeOptions}
-                selectedValue={filterBy.use_type}
+                selectedValue={filterBy.transaction_type}
                 onChange={(value) => handleFilterChange('transaction_type', value)}
               />
             </div>

@@ -83,7 +83,7 @@ const SidebarMenu = () => {
             href="/energy/fuelAnalyze/scope1"
             className="flex gap-2 items-center py-4 px-6  text-xs hover:bg-green-500"
           >
-            {/* <ElectricityIcon className="w-6 h-6" /> */}
+           
             <span className="w-3 h-3 p-1 rounded-sm text-black bg-white flex flex-shrink-0 justify-center items-center">1</span>
            Scope 1
           </a>
@@ -92,7 +92,7 @@ const SidebarMenu = () => {
             className="flex gap-2 items-center py-4 px-6  text-xs hover:bg-green-500"
             aria-disabled
           >
-            {/* <ElectricityIcon className="w-6 h-6" /> */}
+         
             <span className="w-3 h-3 p-1 rounded-sm text-black bg-white flex flex-shrink-0 justify-center items-center">2</span>
            Scope 2 <LockIcon className="ml-6"/>
           </a>
@@ -101,7 +101,7 @@ const SidebarMenu = () => {
             href="/energy/fuelAnalyze/scope3"
             className="flex gap-2 items-center py-4 px-6  text-xs hover:bg-green-500"
           >
-            {/* <ElectricityIcon className="w-6 h-6" /> */}
+           
             <span className="w-3 h-3 p-1 rounded-sm text-black bg-white flex flex-shrink-0 justify-center items-center">3</span>
            Scope 3 <LockIcon className="ml-6"/>
           </a>
@@ -109,7 +109,7 @@ const SidebarMenu = () => {
           </div>
           <hr className="opacity-50"/>
          
-          {/* <span className="flex gap-2 items-center py-2 px-6  text-xs text-white">MASTERS</span> */}
+         
           
           <hr className="opacity-50"/>
          
@@ -146,7 +146,7 @@ const SidebarMenu = () => {
             href="/reduce"
             className="flex gap-2 items-center py-4 px-6  text-xs hover:bg-green-500 font-bold"
           >
-            {/* <BRSRIcon className="w-6 h-6" /> */}
+           
       
             REDUCE
           </a>
@@ -161,7 +161,7 @@ const SidebarMenu = () => {
             href="/offset"
             className="flex gap-2 items-center py-4 px-6  text-xs hover:bg-green-500 font-bold"
           >
-            {/* <BRSRIcon className="w-6 h-6" /> */}
+           
       
             OFFSET
           </a>

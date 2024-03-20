@@ -23,3 +23,29 @@ export const refreshTokens = createAsyncThunk(
     }
   }
 );
+export const loginUser = createAsyncThunk(
+  "auth/loginUser",
+  async ({ username, password }, { dispatch }) => {
+    console.log(username,password)
+    try {
+      // Call the login API endpoint with username and password
+      const response = await api.post("/login-user", {
+        username,
+        password,
+      });
+
+      // Extract tokens from the response
+      const { accessToken, refreshToken } = response.data;
+
+      // Update tokens in the Redux store
+      dispatch(setTokens({ accessToken, refreshToken }));
+
+      // Return accessToken as the fulfilled value
+      return accessToken;
+    } catch (error) {
+      // Handle login failure
+      console.error("Login failed:", error);
+      throw error;
+    }
+  }
+);

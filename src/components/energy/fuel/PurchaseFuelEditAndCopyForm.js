@@ -9,7 +9,12 @@ import {
 import { ReactComponent as CloseIcon } from "../../../app/assets/CloseIcon.svg";
 import { setFuelForm } from "../../../features/energy/fuel/fuelSlice";
 import { toast } from "react-toastify";
-
+/**
+ * Component for editing and copying fuel purchase forms
+ * @param {string} actionType - The type of action to perform ("copy" or "edit")
+ * @param {function} handleCloseEditCopyForms - Function to close the form
+ * @param {object} selectedRowData - The data of the row to be edited (if actionType is "edit" or "copy")
+ */
 const PurchaseFuelEditAndCopyForm = ({
   actionType,
   handleCloseEditCopyForms,
@@ -100,6 +105,7 @@ const PurchaseFuelEditAndCopyForm = ({
     ) {
       const UpdateDataForPopulate = {
         ...selectedRowData,
+        
         site:
          ( siteData.length > 0 )&&
           (siteData.find((s) => s.site === selectedRowData.site)?.id||""),

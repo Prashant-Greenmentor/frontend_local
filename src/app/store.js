@@ -6,7 +6,7 @@ import commonReducer from "../features/common/commonSlice";
 import fuelReducer from "../features/energy/fuel/fuelSlice";
 import electricityReducer from "../features/energy/electricity/electricitySlice";
 import tokenRefreshMiddleware from "../middleware/tokenRefresh";
-import chartSlice from "../pages/Charts(R and D)/Redux/chartSlice";
+import chartSlice from "../pages/VisualizationFeature/Redux/chartSlice";
 
 const store = configureStore({
   reducer: {

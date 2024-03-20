@@ -32,6 +32,7 @@ import TablePagination from "../../components/common/Table/TablePagination";
 import PurchaseElecricityForm from "../../components/energy/electricity/PurchaseElectricityForm";
 
 import TableMeta from "../../components/common/Table/TableMeta";
+import PurchaseFuelEditAndCopyForm from "../../components/energy/fuel/PurchaseFuelEditAndCopyForm";
 import PurchaseElectricityEditAndCopyForm from "../../components/energy/electricity/PurchaseElectricityEditAndCopyForm";
 
 
