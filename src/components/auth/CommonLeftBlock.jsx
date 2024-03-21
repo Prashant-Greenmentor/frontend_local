@@ -22,7 +22,7 @@ function CommonLeftBlock() {
         </p>
 
         <div className="grid grid-cols-2 gap-4 mt-5 p-10">
-          {/* <GoldLogo /> */}
+          {/* <GoldLogo /> */}   
           <img src={GRILogo} alt="GRILogo"/>
           <img src={GreenHouseGasProtocol} alt="greenhousegasProtocol"/>
           <img src={GoldStanderdLogo} alt="GoldStanderdLogo"/>

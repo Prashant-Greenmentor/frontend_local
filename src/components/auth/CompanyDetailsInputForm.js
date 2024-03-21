@@ -1,17 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { postCompanyDetails } from "../../features/auth/authThunks";
 const CompanyDetailsInputForm = () => {
-  const [yearOfIncorporationoptions]=useState( [
-    { id: 1, yearOfIncorporation: 2000 },
-    { id: 2, yearOfIncorporation: 1995 },
-    { id: 3, yearOfIncorporation: 2010 },
-    { id: 4, yearOfIncorporation: 1980 },
-   
-  ]
-  
-  )
+  const [yearOfIncorporationoptions,setyearOfIncorporationoptions]=useState([])
   const [formData, setFormData] = useState({
     companyRegistrationNumber: "",
     companyName:"",
@@ -54,6 +46,13 @@ const dispatch =useDispatch()
       console.log(error)
     }
   };
+  useEffect(() => {
+    const options = [];
+    for (let year = 1800; year <= new Date().getFullYear(); year++) {
+      options.push({ id: year, yearOfIncorporation: String(year) });
+    }
+    setyearOfIncorporationoptions(options.reverse());
+  }, []); 
 
   return (
     <div className="flex flex-col items-center justify-center h-screen lg:w-1/2">
@@ -118,7 +117,7 @@ const dispatch =useDispatch()
             >
             <option value="">Select year</option>
              {yearOfIncorporationoptions.map((item)=>{
-              return <option key={`${item.id}`}>{item.yearOfIncorporation}</option>;
+              return <option className="w-fit" key={`${item.id}`}>{item.yearOfIncorporation}</option>;
              })}
              
             </select> 

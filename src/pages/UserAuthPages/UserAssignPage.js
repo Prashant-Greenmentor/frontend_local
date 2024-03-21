@@ -11,7 +11,7 @@ function UserAssignPage() {
     const roles = [
         { id: 1, role: "Admin" },
         { id: 2, role: "Manager" },
-        { id: 3, role: "Data Entrent" },
+        { id: 3, role: "Data Entrant" },
         { id: 4, role: "Data Approver" }
     ];
    
@@ -45,17 +45,18 @@ function handleFinish(){
                 <div className='flex w-full items-end '>
                     <div className='flex flex-col w-full'>
                         <label htmlFor="Adduser" className=" text-left">Add an user</label>
-                        <div className='flex border w-full rounded justify-between items-center text-center'>
+                        <div className='flex border w-full rounded justify-between items-center text-center '>
                             <input 
-                                className='px-6 outline-none bg-none w-2/3' 
+                                className='px-6 py-1 mx-1 outline-none bg-none w-2/3' 
                                 type="text" 
                                 placeholder='Enter the email address' 
                                 value={email} 
                                 onChange={handleEmailChange} 
                             />
+                         
                             <select 
                                 name="user" 
-                                className='outline-none p-3 w-1/4 ' 
+                                className='outline-none p-2 px-1 w-1/4  border-l-2' 
                                 value={selectedRole} 
                                 onChange={handleRoleChange}
                             >
@@ -67,7 +68,7 @@ function handleFinish(){
                         </div>
                     </div>
                 </div>
-                <button onClick={handleInvite} className='h-fit p-3 px-5 text-white font-bold bg-green-600 rounded-md'>Invite</button>
+                <button onClick={handleInvite} className='h-fit  p-3  px-5 text-white font-bold bg-green-600 rounded-md'>Invite</button>
             </div>
             <div className=' space-x-4 flex justify-center text-center items-center'>
                 <Link className='text-gray-500 underline' to={"/dashboard"}>skip for now</Link>

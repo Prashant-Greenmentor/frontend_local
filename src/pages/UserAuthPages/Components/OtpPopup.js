@@ -1,12 +1,16 @@
 import React, { useState, useRef } from 'react';
-
+import { toast } from 'react-toastify';
+import { ReactComponent as CloseIcon } from '../../../app/assets/CloseIcon.svg';
 const OTPPopup = ({ isOpen, onClose, onSubmit }) => {
   const [otp, setOtp] = useState(['', '', '', '']);
   const refs = [useRef(), useRef(), useRef(), useRef()];
 
   const handleChange = (index, value) => {
     // if (!value) return; // Ignore empty values
-
+if(isNaN(Number(value))){
+  toast("Invalid Number")
+  return
+}
     const newOtp = [...otp];
     newOtp[index] = value;
 
@@ -46,28 +50,30 @@ const OTPPopup = ({ isOpen, onClose, onSubmit }) => {
   return (
     <div className={`fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-50 flex justify-center items-center z-50 ${isOpen ? '' : 'hidden'}`}>
       <div className="relative bg-white px-6 pt-10 pb-4 shadow-xl mx-auto w-full max-w-lg rounded-2xl">
+      <span onClick={onClose} className='flex justify-end w-full mt-[-10px] cursor-pointer'><CloseIcon className='w-4 h-4'/></span>
         <div className="mx-auto flex w-full max-w-md flex-col space-y-5">
           <div className="flex flex-col items-center justify-center text-center space-y-2">
             <div className="font-semibold text-3xl">
               <p>Email Verification</p>
             </div>
-           <span className="flex flex-row items-center justify-center text-center text-sm font-medium space-x-1 text-gray-500">You will receive otp on your registred Email</span>
+           <span className="flex flex-row items-center justify-center text-center text-sm font-medium space-x-1 text-gray-500">Enter the otp received  on your registered email id </span>
           </div>
 
           <div>
             <form onSubmit={handleSubmit}>
               <div className="flex flex-col space-y-3">
-              <label htmlFor="otp" className='px-2'>Enter OTP</label>
+             
                 <div className="flex flex-row items-center justify-between mx-auto w-full max-w-xs">
                   {otp.map((digit, index) => (
                     <div key={index} className="w-16 h-16 ">
                       <input
                         ref={refs[index]}
+                      
                         value={digit}
                         onChange={(e) => handleChange(index, e.target.value)}
                         onKeyDown={(e) => handleKeyDown(index, e)}
                         maxLength={1}
-                        className="w-full p-4 rounded-md border outline-none border-gray-300  focus:border-green-500 focus:ring focus:ring-green-300 focus:ring-opacity-50"
+                        className="w-full p-4 rounded-md border outline-none border-gray-300  text-center font-medium" 
                         type="text"
                         name={`otp-${index}`}
                         id={`otp-${index}`}
