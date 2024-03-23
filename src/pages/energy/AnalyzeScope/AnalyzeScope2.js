@@ -13,7 +13,7 @@ import { fetchChartElectricityDataThunk } from "../../VisualizationFeature/Redux
 
 function AnalyzeScope2() {
   const dispatch = useDispatch();
-  const { transactionTypeOptions, siteOptions, ElectricitySourceOptions, data, dataForCurrentYearChange } = useSelector(state => state.chart);
+  const { transactionTypeOptions, siteOptions, ElectricitySourceOptions, electricityData, dataForCurrentYearChange } = useSelector(state => state.chart);
   const [emissionChange, setEmissonChange] = useState({});
   const [renewableEnergyChange, setrenewableEnergy] = useState({});
   const [EnergyChange, setEnergyChange] = useState({});
@@ -46,7 +46,7 @@ function AnalyzeScope2() {
     setEmissonChange(currentYearLastYearEmissionDetail(dataForCurrentYearChange, 2023));
     setrenewableEnergy(calculateRenewableEnergyUsageChange(dataForCurrentYearChange, 2023));
     setEnergyChange(calculateEnergyUsageChange(dataForCurrentYearChange, 2023));
-  }, [data, dataForCurrentYearChange]);
+  }, [electricityData, dataForCurrentYearChange]);
   useEffect(() => {
     dispatch(fetchChartElectricityDataThunk());
   }, [dispatch]);
@@ -117,7 +117,7 @@ function AnalyzeScope2() {
             </div>
           </div>
           <div>
-            <Main height={"500px"} width={"100%"} filterBy={filterBy} data={data} chartDataArray={chartDataArray} Options={BreakDownOptions} StackBreakDown={StackBreakDown}/>
+            <Main height={"500px"} width={"100%"} filterBy={filterBy} data={electricityData} chartDataArray={chartDataArray} Options={BreakDownOptions} StackBreakDown={StackBreakDown}/>
           </div>
         </div>
       </div>

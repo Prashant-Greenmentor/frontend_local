@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
  
   data: [],
+  electricityData: [],
   overAllData: [],
   dataForCurrentYearChange: [],
   siteOptions: [],
@@ -44,6 +45,9 @@ const chartSlice = createSlice({
     setfuelData(state, action) {
       state.data = action.payload;
     },
+    setElecricityData(state, action) {
+      state.electricityData = action.payload;
+    },
     setOverAllData(state, action) {
       state.overAllData = action.payload;
     },
@@ -67,6 +71,7 @@ export const {
   setSubModuleOptions,
   setModuleOptions,
   setOverAllData,
+  setElecricityData,
   setTransactionTypeOptions,
   setElectricitySourceOptions
 } = chartSlice.actions;

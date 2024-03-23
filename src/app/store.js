@@ -7,6 +7,8 @@ import fuelReducer from "../features/energy/fuel/fuelSlice";
 import electricityReducer from "../features/energy/electricity/electricitySlice";
 import tokenRefreshMiddleware from "../middleware/tokenRefresh";
 import chartSlice from "../pages/VisualizationFeature/Redux/chartSlice";
+import SettingSlices from "../pages/settings/Redux/SettingSlices";
+
 
 const store = configureStore({
   reducer: {
@@ -14,7 +16,8 @@ const store = configureStore({
     fuel: fuelReducer,
     electricity: electricityReducer,
     common: commonReducer,
-    chart:chartSlice
+    chart:chartSlice,
+    setting:SettingSlices
     // other reducers...
   },
   middleware: (getDefaultMiddleware) =>

@@ -9,7 +9,7 @@ const Header = ({PageIcon, pageTitle}) => {
   
   return (
     <nav
-      className="flex items-center justify-between p-4 relative"
+      className="flex items-center justify-between p-4 relative bg-white"
       id="nav-bar"
     >
       <div className="flex items-center relative">

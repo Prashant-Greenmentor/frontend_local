@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { setIsLoading } from "../../../features/common/commonSlice";
 import {
+  setElecricityData,
   setElectricitySourceOptions,
   setFuelTypeOptions,
   setModuleOptions,
@@ -17,6 +18,7 @@ import {
 
 import api from "../../../services/api";
 import { ElectricityData, overAllData, sampledata } from "./Processdata";
+import { toast } from "react-toastify";
 
 export const fetchChartDataThunk = createAsyncThunk(
   "chart/fetchData",
@@ -47,7 +49,7 @@ export const fetchChartDataThunk = createAsyncThunk(
 
         }
       })
-   console.log(data)
+   
       dispatch(setIsLoading(false));
   
       const siteOptions = Array.from(
@@ -68,6 +70,7 @@ export const fetchChartDataThunk = createAsyncThunk(
      
     } catch (error) {
       dispatch(setIsLoading(false));
+      toast(error.message||"Error getting fuel information");
       console.error("Error fetching chart data:", error);
     }
   }
@@ -76,6 +79,7 @@ export const fetchChartElectricityDataThunk = createAsyncThunk(
   "chart/fetchData",
   async (_, { getState, dispatch }) => {
     const apiUrl =`/energy/electricity/electricity-data`;
+    dispatch(setdataForCurrentYearChange([]))
     dispatch(setIsLoading(true))
     try {
       dispatch(setIsLoading(true));
@@ -115,7 +119,7 @@ export const fetchChartElectricityDataThunk = createAsyncThunk(
       );
 
       dispatch(setdataForCurrentYearChange(data))
-      dispatch(setfuelData(data));
+      dispatch(setElecricityData(data));
       dispatch(setElectricitySourceOptions(useElectricitySource));
       dispatch(setTransactionTypeOptions(transactionTypeOptions));
       dispatch(setSiteOptions(siteOptions));

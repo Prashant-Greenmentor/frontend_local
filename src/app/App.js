@@ -14,7 +14,7 @@ import Spinner from "../components/common/Spinner";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import FuelAnalyzePage from "../pages/energy/FuelAnalyzePage";
-import Main from "../pages/settings/MastersUploadPage/Main";
+import Main from "../pages/settings/Main";
 import Index from "../pages/BRSR/Index";
 import Scope3 from "../pages/energy/Scope3";
 

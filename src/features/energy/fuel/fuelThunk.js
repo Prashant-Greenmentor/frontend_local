@@ -55,6 +55,7 @@ export const fetchFuelData = createAsyncThunk(
         return response.data;
     } catch (error) {
       // Handle other API call errors
+      toast(error.message||"Error getting fuel information");
       console.error("Error fetching data:", error);
       throw error;
     } finally {
@@ -83,6 +84,7 @@ export const fetchSiteData = createAsyncThunk(
       //   return response.data;
     } catch (error) {
       // Handle other API call errors
+      
       console.error("Error fetching data:", error);
       throw error;
     } finally {
@@ -111,6 +113,7 @@ export const fetchFuelTypeData = createAsyncThunk(
       //   return response.data;
     } catch (error) {
       // Handle other API call errors
+     
       console.error("Error fetching data:", error);
       throw error;
     } finally {
