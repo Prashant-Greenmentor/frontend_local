@@ -89,6 +89,7 @@ const PurchaseElecricityForm = ({
                   id="bill_date"
                   value={formValue.bill_date || ""}
                   onChange={handleFormChange}
+                  className="appearance-none block w-full bg-gray-50 text-neutral-700 text-xs border-0 py-1.5 px-4 leading-tight focus:outline-none"
                   required
                 />
               </div>
@@ -102,6 +103,7 @@ const PurchaseElecricityForm = ({
                   id="bill_start"
                   value={formValue.bill_start || ""}
                   onChange={handleFormChange}
+                  className="appearance-none block w-full bg-gray-50 text-neutral-700 text-xs border-0 py-1.5 px-4 leading-tight focus:outline-none"
                   required
                 />
               </div>
@@ -114,6 +116,7 @@ const PurchaseElecricityForm = ({
                   name="bill_end"
                   id="bill_end"
                   value={formValue.bill_end || ""}
+                  className="appearance-none block w-full bg-gray-50 text-neutral-700 text-xs border-0 py-1.5 px-4 leading-tight focus:outline-none"
                   min={startDate}
                   onChange={handleFormChange}
                   required
@@ -126,6 +129,7 @@ const PurchaseElecricityForm = ({
                 <select
                   name="site"
                   onChange={handleFormChange}
+                  className="appearance-none block w-full bg-gray-50 text-neutral-700 text-xs border-0 py-1.5 px-4 leading-tight focus:outline-none"
                   required
                   value={formValue.site || ""}
                 >
@@ -152,6 +156,7 @@ const PurchaseElecricityForm = ({
                   name="electricity_source"
                   value={formValue.electricity_source || ""}
                   onChange={handleFormChange}
+                  className="appearance-none block w-full bg-gray-50 text-neutral-700 text-xs border-0 py-1.5 px-4 leading-tight focus:outline-none"
                   required
                 >
                   <option value="" disabled>

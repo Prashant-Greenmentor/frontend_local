@@ -31,6 +31,7 @@ import UserAssignPage from "../pages/UserAuthPages/UserAssignPage";
 import ForgotPassword from "../pages/UserAuthPages/ForgotPassword";
 import CheckInboxPage from "../pages/UserAuthPages/CheckInboxPage";
 import ResetPassword from "../pages/UserAuthPages/ResetPassword";
+import UserProfile from "../pages/UserProfile/UserProfile";
 
 
 function App() {
@@ -85,6 +86,10 @@ function App() {
         <Route
           path="/company-details"
           element={<PublicRoute element={<CompanyDetailsInputPage/>} restricted={false} />}
+        />
+        <Route
+          path="/profile"
+          element={<PrivateRoute element={UserProfile}  />}
         />
         <Route
           path="/energy/fuel"

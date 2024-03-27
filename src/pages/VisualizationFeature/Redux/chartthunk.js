@@ -100,7 +100,7 @@ export const fetchChartElectricityDataThunk = createAsyncThunk(
             bill_date: new Date(item.bill_date).toISOString().split('T')[0],
             site: item.site_master.site,
             electricity_source: item.electricity_source?.electricity_source,
-            unit: item.unit_master["unit"],
+           
             year: parseFloat(item?.year),
             quarter: parseFloat(item?.quarter),
             usage_in_kwh: parseFloat(item?.usage_in_kwh).toFixed(6),
@@ -122,7 +122,7 @@ export const fetchChartElectricityDataThunk = createAsyncThunk(
           };
         }
         let dataTrans = mapeddata.map((item) => transformData(item));
-     
+   
         const siteOptions = Array.from(
           new Set(dataTrans?.map((entry) => entry.site))
         );
@@ -162,7 +162,7 @@ export const fetchChartOverAllDataThunk = createAsyncThunk(
          //   Authorization: `Bearer ${accessToken}`,
          // },
       });
-  
+  console.log(response)
         if(response.status==200&&response.data.success){
       const data=response.data.data.map((item)=>{
         return transformData(item)
@@ -176,7 +176,7 @@ export const fetchChartOverAllDataThunk = createAsyncThunk(
             quarter: parseInt(data.quarter), // Convert to integer if needed
             year: parseInt(data.year), // Convert to integer if needed
             site: data.site_master.site,
-            usage_in_kwh: parseFloat(data.usage_in_kwh), // Convert to float if needed
+            usage_in_kwh: parseFloat(data?.usage_in_kwh), // Convert to float if needed
             total_co2e_kg: parseFloat(data.total_co2e_kg), // Convert to float if needed
             source_type: 'renewable' // Convert to lowercase
         };
@@ -195,7 +195,7 @@ export const fetchChartOverAllDataThunk = createAsyncThunk(
       );
 
       dispatch(setdataForCurrentYearChange(data))
-      dispatch(setOverAllData(data));
+      dispatch(setOverAllData(overAllData));
       dispatch(setSiteOptions(siteOptions));
       dispatch(setSubModuleOptions(useSubModuleOptions));
       dispatch(setModuleOptions(moduleOptions));

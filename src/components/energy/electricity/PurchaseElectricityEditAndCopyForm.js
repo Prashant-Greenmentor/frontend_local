@@ -23,9 +23,11 @@ const PurchaseElectricityEditAndCopyForm = ({
   let formValue = useSelector((state) => state.electricity.electricityForm);
   const [transactionTypeOptions, ] = useState([
     "Purchased",
-    "Consumed",
+    "Captive",
   ]);
-
+  // const transactionTypeOptions = useSelector(
+  //   (state) => state.electricity.electricityTransactionTypeData
+  // );
 
   const handleElectricityBoardChange = (value) => {
     setSelectedElectricityBoard(value);
@@ -122,7 +124,7 @@ const PurchaseElectricityEditAndCopyForm = ({
         dispatch(setElectricityForm({ ...UpdateDataForPopulate }));
     }
     
-  }, [selectedRowData,actionType,dispatch]);
+  }, [selectedRowData,actionType,dispatch,transactionTypeOptions]);
 
   return (
     <>
@@ -314,12 +316,12 @@ const PurchaseElectricityEditAndCopyForm = ({
                 <select
                   // defaultValue={""}
                   onChange={handleFormChange}
-                  required
+                  // required
                   value={formValue.unit||""}
                   name="unit"
                   className="appearance-none block w-full bg-gray-50 text-neutral-700 text-xs border-0 py-1.5 px-4 leading-tight focus:outline-none"
                 >
-                  <option value="" disabled>
+                  <option value="" >
                     Choose the unit
                   </option>
                   {unitData?.map((type, index) => (

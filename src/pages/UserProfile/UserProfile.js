@@ -1,18 +1,18 @@
 import React, { useRef, useState } from "react";
-import { ReactComponent as Mail } from "../../../app/assets/Mail.svg";
-import { ReactComponent as User } from "../../../app/assets/User.svg";
-import { ReactComponent as Key } from "../../../app/assets/Key.svg";
-import { ReactComponent as Phone } from "../../../app/assets/Phone.svg";
-import userImage from "../../../app/assets/Amish.png";
+import { ReactComponent as Mail } from "../../app/assets/Mail.svg";
+import { ReactComponent as User } from "../../app/assets/User.svg";
+import { ReactComponent as Key } from "../../app/assets/Key.svg";
+import { ReactComponent as Phone } from "../../app/assets/Phone.svg";
+import { ReactComponent as UserIcon } from "../../app/assets/User.svg";
+import userImage from "../../app/assets/Amish.png";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  resetCompanyProfileForm,
-  setCompanyProfileForm,
-} from "../Redux/SettingSlices";
+
 import { toast } from "react-toastify";
-import { InputField } from "../components/InputField";
-function CompanyProfile() {
-  const { companyProfileForm } = useSelector((state) => state.setting);
+import { InputField } from "../settings/components/InputField";
+import Header from "../../components/common/Header";
+function UserProfile() {
+  const [UserProfileForm]=useState({})
+  
   const dispatch = useDispatch();
 
   const fileInputRef = useRef(null);
@@ -28,22 +28,23 @@ function CompanyProfile() {
   };
   function onChange(e) {
     const { name, value } = e.target;
-    dispatch(setCompanyProfileForm({ ...companyProfileForm, [name]: value }));
+    // dispatch(setUserProfileForm({ ...UserProfileForm, [name]: value }));
   }
   function handleSubmit() {
     if (
-      companyProfileForm.newPassword !== companyProfileForm.confirmNewPassword
+      UserProfileForm.newPassword !== UserProfileForm.confirmNewPassword
     ) {
       toast("Password Mismatch");
     }
   }
   function handleCancel() {
-    dispatch(resetCompanyProfileForm());
+    // dispatch(resetUserProfileForm());
   }
-  console.log(companyProfileForm);
+  console.log(UserProfileForm);
   return (
-    <div className="w-full border h-full">
-      <div className="p-5 w-full h-full">
+    <div className="w-full h-screen flex flex-col gap-5">
+    <Header pageTitle={"UserProfile"} PageIcon={UserIcon}/>
+      <div className="p-5  w-full flex-1">
         <div className="flex justify-between w-full">
           <div className="flex justify-center items-center text-left space-x-2">
             <div className="w-24 h-24 object-cover">
@@ -83,7 +84,7 @@ function CompanyProfile() {
             label={"First Name"}
             name={"firstName"}
             placeholder={"Enter your first name"}
-            value={companyProfileForm.firstName}
+            // value={UserProfileForm.firstName}
             onChange={onChange}
             type="text"
             Decoration={""}
@@ -93,7 +94,7 @@ function CompanyProfile() {
             label={"Last Name"}
             name={"lastName"}
             placeholder={"Enter your Last name"}
-            value={companyProfileForm.lastName}
+            // value={UserProfileForm.lastName}
             onChange={onChange}
             type="text"
             Decoration={""}
@@ -103,7 +104,7 @@ function CompanyProfile() {
             label={"Email Address"}
             name={"email"}
             placeholder={"Enter your email address"}
-            value={companyProfileForm.email}
+            // value={UserProfileForm.email}
             onChange={onChange}
             type="email"
             Decoration={Mail}
@@ -113,7 +114,7 @@ function CompanyProfile() {
             label={"Phone Number"}
             name={"phoneNumber"}
             placeholder={"Enter your phone Number"}
-            value={companyProfileForm.phoneNumber}
+            // value={UserProfileForm.phoneNumber}
             onChange={onChange}
             type="tel"
             Decoration={Phone}
@@ -123,7 +124,7 @@ function CompanyProfile() {
             label={"Designation"}
             name={"designation"}
             placeholder={"Enter your phone Number"}
-            value={companyProfileForm.designation}
+            // value={UserProfileForm.designation}
             onChange={onChange}
             type="text"
             Decoration={User}
@@ -135,7 +136,7 @@ function CompanyProfile() {
             label={"Current Password"}
             name={"currentPassword"}
             placeholder={"Enter Current Password"}
-            value={companyProfileForm.currentPassword}
+            // value={UserProfileForm.currentPassword}
             onChange={onChange}
             type="password"
             Decoration={Key}
@@ -145,7 +146,7 @@ function CompanyProfile() {
             label={"New Password"}
             name={"newPassword"}
             placeholder={"Enter New Password"}
-            value={companyProfileForm.newPassword}
+            // value={UserProfileForm.newPassword}
             onChange={onChange}
             type="password"
             Decoration={Key}
@@ -156,7 +157,7 @@ function CompanyProfile() {
               label={"Confirm Password"}
               name={"ConfirmPassword"}
               placeholder={"Enter Confirm Password"}
-              value={companyProfileForm.ConfirmPassword}
+              // value={UserProfileForm.ConfirmPassword}
               onChange={onChange}
               type="password"
               Decoration={Key}
@@ -181,4 +182,4 @@ function CompanyProfile() {
   );
 }
 
-export default CompanyProfile;
+export default UserProfile;

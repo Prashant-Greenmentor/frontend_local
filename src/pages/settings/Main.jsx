@@ -5,7 +5,7 @@ import { ReactComponent as SettingsIcon } from "../../app/assets/SettingsIcon.sv
 import { ReactComponent as BuildingIcon } from "../../app/assets/BuildingIcon.svg";
 import { ReactComponent as DashboardIcon } from "../../app/assets/DashboardIcon.svg";
 import { ReactComponent as RequestPanelIcon } from "../../app/assets/RequestPanelIcon.svg";
-import CompanyProfile from "./CompanyProfile/UserProfile";
+import CompanyProfile from "./CompanyProfile/CompanyProfile";
 import AdminDashboard from "./AdminDashboard/AdminDashboard";
 import RequesPanel from "./Request Panel/RequesPanel";
 function Main() {

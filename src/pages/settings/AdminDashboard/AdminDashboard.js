@@ -10,6 +10,7 @@ import { ReactComponent as DeleteIcon } from "../../../app/assets/DeleteIcon.svg
 import { ReactComponent as SendIcon } from "../../../app/assets/SendIcon.svg";
 import Table from "../../../components/common/Table/Table";
 import DashboardCard from "../components/DashboardCard";
+import Popup from "./components/Row1PopUps";
 const AdminDashboard = () => {
   const itemsPerPage = useSelector((state) => state.setting.itemsPerPage);
   const adminDashboardData = useSelector(
@@ -19,6 +20,15 @@ const AdminDashboard = () => {
   const totalCount = useSelector((state) => state.setting.totalCount);
   const currentPage = useSelector((state) => state.setting.currentPage);
   const [dataRows, setDataRows] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
+const [title,settitle]=useState("")
+  const openPopup = () => {
+    setIsOpen(true);
+  };
+
+  const closePopup = () => {
+    setIsOpen(false);
+  };
   const dispatch = useDispatch();
   const headingsToDataKeyMap = {
     NAME: "name",
@@ -30,6 +40,7 @@ const AdminDashboard = () => {
     "RESET PASSWORD": "reset_password",
     DELETE: "delete",
   };
+ 
   const [paginationConfig, setPaginationConfig] = useState({
     paginationEnabled: true,
     currentPage: 1,
@@ -48,6 +59,7 @@ const AdminDashboard = () => {
   const handleEdit = (row) => {
     console.log("handle edit row ", row);
   };
+  
   const generateCellHtml = (row, k) => {
     let cellHtml = null;
     switch (k) {
@@ -124,22 +136,19 @@ const AdminDashboard = () => {
       handlePageChange: handlePageChange,
     });
   }, [adminDashboardData]);
-  const avatars = [
-    { name: 'Ryan Florence', src: 'https://img.freepik.com/premium-vector/personas-icon_1076610-12224.jpg?w=740' },
-    { name: 'Segun Adebayo', src: 'https://img.freepik.com/premium-vector/personas-icon_1076610-12224.jpg?w=740' },
-    { name: 'Kent Dodds', src: 'https://img.freepik.com/premium-vector/personas-icon_1076610-12224.jpg?w=740' },
-  ];
+
   const handleclick=(text)=>{
-    console.log("Clicked on ", text)
+    settitle(text)
+    openPopup()
   }
   return (
     <div className="p-4">
     <div className="flex space-x-6">
-      <DashboardCard handleclick={handleclick} text="Number of Active Users" avatars={avatars}/>
-      <DashboardCard handleclick={handleclick} text="Data In" avatars={avatars}/>
-      <DashboardCard handleclick={handleclick} text="Analyze" avatars={avatars}/>
-      <DashboardCard handleclick={handleclick} text="Reports" avatars={avatars}/>
-      <DashboardCard handleclick={handleclick} text="Audits" avatars={avatars}/>
+      <DashboardCard handleclick={handleclick} text="Number of Active Users" avatars={adminDashboardData}/>
+      <DashboardCard handleclick={handleclick} text="Data In" avatars={adminDashboardData}/>
+      <DashboardCard handleclick={handleclick} text="Analyze" avatars={adminDashboardData}/>
+      <DashboardCard handleclick={handleclick} text="Reports" avatars={adminDashboardData}/>
+      <DashboardCard handleclick={handleclick} text="Audits" avatars={adminDashboardData}/>
 
     </div>
     <div className="flex justify-start space-x-2 items-center p-1 px-2  bg-white rounded-lg w-fit border-2 mt-3">
@@ -168,6 +177,7 @@ const AdminDashboard = () => {
           )}
       </div>
       <button className="flex justify-between items-center p-2 px-3 rounded-lg text-green-600 bg-[#C1EBDB]">Add New User <span><UserIconPlus/></span></button>
+      {isOpen&&<Popup title={title} onClose={closePopup} data={adminDashboardData}/>}
     </div>
   );
 };

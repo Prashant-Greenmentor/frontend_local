@@ -1,9 +1,13 @@
 import React, { useRef, useState } from "react";
 import { ReactComponent as Mail } from "../../../app/assets/Mail.svg";
 import { ReactComponent as User } from "../../../app/assets/User.svg";
-import { ReactComponent as Key } from "../../../app/assets/Key.svg";
+import { ReactComponent as Number123Icon } from "../../../app/assets/Number123Icon.svg";
 import { ReactComponent as Phone } from "../../../app/assets/Phone.svg";
-import userImage from "../../../app/assets/Amish.png";
+import { ReactComponent as Website } from "../../../app/assets/Website.svg";
+import { ReactComponent as StockMarket } from "../../../app/assets/StockMarket.svg";
+import { ReactComponent as ListedYear } from "../../../app/assets/ListedYearIcon.svg";
+import { ReactComponent as CorporateIcon } from "../../../app/assets/CorporateIcon.svg";
+
 import { useDispatch, useSelector } from "react-redux";
 import {
   resetCompanyProfileForm,
@@ -84,27 +88,28 @@ function CompanyProfile() {
             Decoration={""}
             decorationClassName="hidden"
           />
+         
           <InputField
+            label={"Country of Registration"}
+            name={"countryOfRegistration"}
+            placeholder={"Enter your country of registration"}
+            value={companyProfileForm.countryOfRegistration}
+            onChange={onChange}
+            type="text"
+            Decoration={Mail}
+            inputClassName="border-l-0 rounded-tl-none rounded-bl-none"
+          />
+           <InputField
             label={"Year of  Incorporation"}
             name={"yearIncorporated"}
             placeholder={"YYYY"}
             value={companyProfileForm.lastName}
             onChange={onChange}
             type="text"
-            Decoration={""}
-            decorationClassName="hidden"
-          />
-          <InputField
-            label={"Email Address"}
-            name={"email"}
-            placeholder={"Enter your email address"}
-            value={companyProfileForm.email}
-            onChange={onChange}
-            type="email"
-            Decoration={Mail}
+            Decoration={ListedYear}
             inputClassName="border-l-0 rounded-tl-none rounded-bl-none"
           />
-          <InputField
+          {/* <InputField
             label={"Phone Number"}
             name={"phoneNumber"}
             placeholder={"Enter your phone Number"}
@@ -113,52 +118,87 @@ function CompanyProfile() {
             type="tel"
             Decoration={Phone}
             inputClassName="border-l-0 rounded-tl-none rounded-bl-none"
-          />
+          /> */}
           <InputField
-            label={"Designation"}
-            name={"designation"}
-            placeholder={"Enter your phone Number"}
-            value={companyProfileForm.designation}
+            label={"Industry"}
+            name={"industry"}
+            placeholder={"Enter Industry"}
+            value={companyProfileForm.industry}
             onChange={onChange}
             type="text"
-            Decoration={User}
-            inputClassName="border-l-0 rounded-tl-none rounded-bl-none"
-          />
-        </div>
-        <div className="w-full grid grid-cols-2 gap-2 mt-4">
-          <InputField
-            label={"Current Password"}
-            name={"currentPassword"}
-            placeholder={"Enter Current Password"}
-            value={companyProfileForm.currentPassword}
-            onChange={onChange}
-            type="password"
-            Decoration={Key}
+            Decoration={StockMarket}
             inputClassName="border-l-0 rounded-tl-none rounded-bl-none"
           />
           <InputField
-            label={"New Password"}
-            name={"newPassword"}
-            placeholder={"Enter New Password"}
-            value={companyProfileForm.newPassword}
+            label={"NIC code"}
+            name={"nic_code"}
+            placeholder={"Enter NIC Code"}
+            value={companyProfileForm.nic_code}
             onChange={onChange}
-            type="password"
-            Decoration={Key}
+            type="text"
+            Decoration={Number123Icon}
             inputClassName="border-l-0 rounded-tl-none rounded-bl-none"
           />
-          <div className="col-span-2">
-            <InputField
-              label={"Confirm Password"}
-              name={"ConfirmPassword"}
-              placeholder={"Enter Confirm Password"}
-              value={companyProfileForm.ConfirmPassword}
-              onChange={onChange}
-              type="password"
-              Decoration={Key}
-             
-              inputClassName="border-l-0 rounded-tl-none rounded-bl-none"
-            />
-          </div>
+          <InputField
+            label={"Number of employee"}
+            name={"num_employee"}
+            placeholder={"Enter employee"}
+            value={companyProfileForm.num_employee}
+            onChange={onChange}
+            type="text"
+            Decoration={Number123Icon}
+            inputClassName="border-l-0 rounded-tl-none rounded-bl-none"
+          />
+          <InputField
+            label={"Listed Year ( Optional) "}
+            name={"listed_year"}
+            placeholder={"Enter Listed Year ( Optional) "}
+            value={companyProfileForm.listed_year}
+            onChange={onChange}
+            type="date"
+            Decoration={ListedYear}
+            inputClassName="border-l-0 rounded-tl-none rounded-bl-none"
+          />
+          <InputField
+            label={"Stock Exchange where company is listed ( Optional)"}
+            name={"listed_stockexchange"}
+            placeholder={"Enter Stock Exchange"}
+            value={companyProfileForm.listed_stockexchange}
+            onChange={onChange}
+            type="text"
+            Decoration={StockMarket}
+            inputClassName="border-l-0 rounded-tl-none rounded-bl-none"
+          />
+          <InputField
+            label={"Fiscal Year"}
+            name={"fiscalyear"}
+            placeholder={"Enter Fiscal Year"}
+            value={companyProfileForm.fiscalyear}
+            onChange={onChange}
+            type="text"
+            Decoration={ListedYear}
+            inputClassName="border-l-0 rounded-tl-none rounded-bl-none"
+          />
+          <InputField
+            label={"Website"}
+            name={"website"}
+            placeholder={"Enter Website"}
+            value={companyProfileForm.website}
+            onChange={onChange}
+            type="text"
+            Decoration={Website}
+            inputClassName="border-l-0 rounded-tl-none rounded-bl-none"
+          />
+          <InputField
+            label={"Corporate office"}
+            name={"corporate_office"}
+            placeholder={"Enter Corporate office"}
+            value={companyProfileForm.corporate_office}
+            onChange={onChange}
+            type="text"
+            Decoration={CorporateIcon}
+            inputClassName="border-l-0 rounded-tl-none rounded-bl-none"
+          />
         </div>
         <div className=" flex justify-end mt-4 space-x-4">
           <button className="border border-red-500 text-red-500 p-2 px-6 rounded-md">
@@ -168,7 +208,7 @@ function CompanyProfile() {
             onClick={handleSubmit}
             className="p-2 px-6 rounded-md bg-green-400 text-white"
           >
-            Save Changes
+            Save
           </button>
         </div>
       </div>
