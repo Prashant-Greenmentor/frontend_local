@@ -18,6 +18,7 @@ import { SunburstChart } from "./SunBurstChartEmission";
  * @param {Object} StackBreakDown - Configuration options for the stacked bar chart
  */
 function MainOverAll({ width, height, filterBy ,data,chartDataArray,Options,StackBreakDown}) {
+  
   const [scopes,setScopes]=useState(['Scope 1','Scope 2',"Scope 3"])  /// scope declare here
   const [currentFinancialYear] = useState(2023); //set current finencial year here
   const [filtredDataByGlobleFilter, setfiltredDataByGlobleFilter] = useState(
@@ -57,12 +58,12 @@ function MainOverAll({ width, height, filterBy ,data,chartDataArray,Options,Stac
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-2  w-full py-3">
+      <div className="grid grid-cols-1 gap-2  w-full py-3">
       <div className=" border rounded-md mt-[18px] px-2 py-2  w-full shadow-md">
       <SunburstChart option={generateOptionforSunburst(filtredDataByGlobleFilter,currentFinancialYear)}/>
       </div>
-      <div className=" border rounded-md mt-[18px] px-2 py-2  w-full shadow-md">
-      </div>
+      {/* <div className=" border rounded-md mt-[18px] px-2 py-2  w-full shadow-md">
+      </div> */}
      
       </div>
       <div className="grid grid-cols-2 gap-2  w-full py-3">

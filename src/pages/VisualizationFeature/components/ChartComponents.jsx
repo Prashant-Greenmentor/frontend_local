@@ -105,9 +105,11 @@ const ChartComponent = ({ height, width, BreakDownOptions, data }) => {
       <ReactECharts
         style={{ height, width }}
         option={options}
-        onEvents={{
-          legendselectchanged: onLegendSelectChanged,
-        }}
+        notMerge={true}
+  lazyUpdate={true}
+        // onEvents={{
+        //   legendselectchanged: onLegendSelectChanged,
+        // }}
       />
     </>
   );

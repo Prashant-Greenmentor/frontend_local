@@ -10,15 +10,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
 import {
-  fetchCurrencyData,
-  fetchElectricityData,
-  fetchElectricityTypeData,
-  fetchSiteData,
-  fetchSourceTypeData,
-  fetchUnitData,
-  fetchUseTypeData,
-} from "../../features/energy/electricity/electricityThunk";
-import {
   resetElectricityForm,
   setCurrentPage,
   setElectricityForm,
@@ -26,15 +17,23 @@ import {
 } from "../../features/energy/electricity/electricitySlice";
 import { downloadFileThunk } from "../../features/common/commonThunk";
 
-
 import Table from "../../components/common/Table/Table";
 import TablePagination from "../../components/common/Table/TablePagination";
 import PurchaseElecricityForm from "../../components/energy/electricity/PurchaseElectricityForm";
 
 import TableMeta from "../../components/common/Table/TableMeta";
-import PurchaseFuelEditAndCopyForm from "../../components/energy/fuel/PurchaseFuelEditAndCopyForm";
 import PurchaseElectricityEditAndCopyForm from "../../components/energy/electricity/PurchaseElectricityEditAndCopyForm";
 
+import {
+  electricityUploadEvidence,
+  fetchCurrencyData,
+
+  fetchElectricityInputData,
+  fetchElectricitySourcesTypeData,
+  fetchSiteData,
+  fetchTransactionTypeData,
+  fetchUnitData,
+} from "../../features/energy/electricity/electricityThunk";
 
 const ElectricityPage = () => {
   const electricityRecords = useSelector(
@@ -43,16 +42,17 @@ const ElectricityPage = () => {
   const electricityRecordType = useSelector(
     (state) => state.electricity.electricityRecordType
   );
+ 
 
   const itemsPerPage = useSelector((state) => state.electricity.itemsPerPage);
   const totalPages = useSelector((state) => state.electricity.totalPages);
   const totalCount = useSelector((state) => state.electricity.totalCount);
   const currentPage = useSelector((state) => state.electricity.currentPage);
   const [dataRows, setDataRows] = useState([]);
- 
+
   const [isPurchaseFormOpen, setPurchaseFormOpen] = useState(false);
-  
-  const [startDate, setStartDate] = useState('');
+
+  const [startDate, setStartDate] = useState("");
   const [manualEntry, setManualEntry] = useState(true);
   const [apiIntegration, setApiIntegration] = useState(false);
   const [trendLine, setTrendLine] = useState(false);
@@ -63,48 +63,31 @@ const ElectricityPage = () => {
   const [isEditCopyFormOpen, setIsEditCopyFormOpen] = useState(false);
   const handleCloseEditCopyForms = () => {
     setIsEditCopyFormOpen(false);
-   
   };
-  console.log(electricityRecords)
+
   const dispatch = useDispatch();
 
   //  Handle edit , add and copy
-  const openPopupForm = (fuelRecordType) => {
-    
-    dispatch(resetElectricityForm())
-   
-  
-    if (fuelRecordType === 1) {
-      // dispatch(fetchCurrencyData());
-      // dispatch(fetchSiteData());
-      // dispatch(fetchElectricityTypeData());
-      // dispatch(fetchSourceTypeData());
-      // dispatch(fetchUnitData());
-      // dispatch(fetchUseTypeData());
-      setPurchaseFormOpen(true);
-     
-    } else {
-    }
+  const openPopupForm = () => {
+    dispatch(resetElectricityForm());
+
+    setPurchaseFormOpen(true);
   };
 
   const closePurchasePopupForm = () => {
-   
     setPurchaseFormOpen(false);
   };
   const handleEdit = (row) => {
-    setStartDate(row["bill_start"])  // for seting start date in form
- 
-   
-    setActionType("edit")
+    setStartDate(row["bill_start"]); // for seting start date in form
+
+    setActionType("edit");
     setSelectedRowData(row); // Set the selected row data
     setIsEditCopyFormOpen(true);
   };
-  const handleCopy = (row) => {
-    setStartDate(row["bill_start"])  
-  
-    
-    setActionType("copy")
-    setSelectedRowData(row); // Set the selected row data
+  const handleCopy = (selectedData) => {
+    setStartDate(selectedData["bill_start"]);
+    setSelectedRowData(selectedData); // Set the selected row dat
+    setActionType("copy");
     setIsEditCopyFormOpen(true);
   };
 
@@ -115,14 +98,14 @@ const ElectricityPage = () => {
     "BILLING START PERIOD": "bill_start",
     "BILLING END PERIOD": "bill_end",
     SITE: "site",
-    "ELECTRICITY SOURCE": "electricity_resource",
+    "ELECTRICITY SOURCE": "electricity_source",
     "SOURCE TYPE": "source_type",
     "TRANSACTION TYPE": "transaction_type",
     "ELECTRICITY BOARD": "electricity_board",
-    "UNIT USED": "unit_used",
+    "UNIT USED": "consumed_value",
     UNIT: "unit",
     "AMOUNT PAID": "amount_paid",
-    CURRENCY: "currency",
+    CURRENCY: "currency_id",
     "EMISSION FACTOR": "emission_factor",
     EVIDENCE: "evidence",
     STATUS: "status",
@@ -132,7 +115,7 @@ const ElectricityPage = () => {
     EDIT: "edit",
   };
   const switchTab = (tabId) => {
-    switch(tabId) {
+    switch (tabId) {
       case 1:
         setManualEntry(true);
         setApiIntegration(false);
@@ -155,7 +138,7 @@ const ElectricityPage = () => {
         break;
     }
     setSelectedTab(tabId);
-  }
+  };
   const [paginationConfig, setPaginationConfig] = useState({
     paginationEnabled: true,
     currentPage: 1,
@@ -176,7 +159,6 @@ const ElectricityPage = () => {
   const handleFileDownload = (filePath) => {
     dispatch(downloadFileThunk({ filePath }));
   };
- 
 
   const generateCellHtml = (row, k) => {
     let cellHtml = null;
@@ -186,22 +168,16 @@ const ElectricityPage = () => {
           <span className="w-full flex justify-center">
             <span
               className={`px-2 py-1 border border-transparent rounded-md ${
-                row["electricity_resource"].toString().toLowerCase() ===
-                "wind".toLowerCase()
+                row["electricity_source"] === "wind"
                   ? "bg-green-200 text-green-600"
-                  : row["electricity_resource"].toString().toLowerCase() ===
-                    "hydro".toLowerCase()
+                  : row["electricity_source"] === "hydro"
                   ? "text-blue-800 bg-blue-200"
-                  : row["electricity_resource"].toString().toLowerCase() ===
-                    "solar".toLowerCase()
+                  : row["electricity_source"] === "solar"
                   ? "text-yellow-700 bg-yellow-200"
-                  : row["electricity_resource"].toString().toLowerCase() ===
-                      "gas".toLowerCase() ||
-                    row["electricity_resource"].toString().toLowerCase() ===
-                      "diesel".toLowerCase()
+                  : row["electricity_source"] === "gas" ||
+                    row["electricity_source"] === "diesel"
                   ? "text-red-600 bg-red-200"
-                  : row["electricity_resource"].toString().toLowerCase() ===
-                    "mixed renewable".toLowerCase()
+                  : row["electricity_source"] === "mixed renewable"
                   ? "bg-green-200 text-green-600"
                   : "text-black bg-gray-200"
               }`}
@@ -216,12 +192,12 @@ const ElectricityPage = () => {
           <span className="w-full flex justify-center">
             <span
               className={`px-2 py-1 border border-transparent rounded-md ${
-                row[k].toString().toLowerCase() === "Uploaded".toLowerCase()
+                row[k] === "Uploaded"
                   ? "bg-green-600 text-white"
                   : "bg-red-200 text-red-600"
               }`}
             >
-              {row[k]}
+              {row[k] || "Panding"}
             </span>
           </span>
         );
@@ -236,18 +212,18 @@ const ElectricityPage = () => {
           </span>
         );
         break;
-        case 'submitted_by':
-          case 'approved_by':
-            cellHtml = (
-              <span className="w-full flex justify-center">
-                <img
-                  src={`${UserIcon}`}
-                  className="cursor-pointer w-[32px] h-[32px] border border-transparent rounded-[50%]"
-                  alt={`${k}`}
-                />
-              </span>
-            );
-            break;
+      case "submitted_by":
+      case "approved_by":
+        cellHtml = (
+          <span className="w-full flex justify-center">
+            <img
+              src={`${UserIcon}`}
+              className="cursor-pointer w-[32px] h-[32px] border border-transparent rounded-[50%]"
+              alt={`${k}`}
+            />
+          </span>
+        );
+        break;
       case "edit":
         cellHtml = (
           <span className="w-full flex justify-center">
@@ -266,20 +242,22 @@ const ElectricityPage = () => {
   };
 
   useEffect(() => {
-    let transformedDataRows = electricityRecords.map((row) => {
-      let transformedDataRow = [];
-      transformedDataRow.push(
-        <span className="w-full flex justify-center cursor-pointer">
-          <CopyIcon onClick={() => handleCopy(row)} />
-        </span>
-      );
-      Object.values(headingsToDataKeyMap).forEach((k) => {
-        if (k.toString().trim() !== "") {
-          transformedDataRow.push(generateCellHtml(row, k));
-        }
+    let transformedDataRows =
+      electricityRecords &&
+      electricityRecords?.map((row) => {
+        let transformedDataRow = [];
+        transformedDataRow.push(
+          <span className="w-full flex justify-center cursor-pointer">
+            <CopyIcon onClick={() => handleCopy(row)} />
+          </span>
+        );
+        Object.values(headingsToDataKeyMap).forEach((k) => {
+          if (k.toString().trim() !== "") {
+            transformedDataRow.push(generateCellHtml(row, k));
+          }
+        });
+        return transformedDataRow;
       });
-      return transformedDataRow;
-    });
 
     setDataRows(transformedDataRows);
     setPaginationConfig({
@@ -292,38 +270,50 @@ const ElectricityPage = () => {
     });
   }, [electricityRecords]);
 
+  useEffect(() => {}, [itemsPerPage, currentPage]);
   useEffect(() => {
-    dispatch(fetchElectricityData());
-  }, [itemsPerPage, currentPage]);
-//  handle add ,edit and copy electricityform
-  const handleFormChange = (e) => {
-  
-    const { name, value } = e.target;
-  // Calendar Validation
-  if ( name === 'bill_start') {
-   setStartDate(value)  
-}
-//  implemented other input for electricity_board
-    if(value==="other"){
-      setIsOtherSelected(true)
-      dispatch(setElectricityForm({[name]:""}))
-    }else if(value!=="other"&&e.target.tagName==="SELECT"&&name==="electricity_board"){
-   
-      setIsOtherSelected(false)
-    }
-    dispatch(setElectricityForm({[name]:value}))
-   
-  };
+    dispatch(fetchElectricityInputData()).then(() => {
+      dispatch(fetchCurrencyData());
+      dispatch(fetchSiteData());
+      dispatch(fetchUnitData());
 
+      dispatch(fetchElectricitySourcesTypeData());
+    });
+  }, []);
+  //  handle add ,edit and copy electricityform
+  const handleFormChange = (e) => {
+    const { name, value } = e.target;
+    // Calendar Validation
+    if (name == "electricity_source") {
+      dispatch(fetchTransactionTypeData(value));
+    }
+    if (name === "bill_start") {
+      setStartDate(value);
+    }
+    if (name === "evidence") {
+      dispatch(electricityUploadEvidence());
+    }
+    //  implemented other input for electricity_board
+    if (value === "other") {
+      setIsOtherSelected(true);
+      dispatch(setElectricityForm({ [name]: "" }));
+    } else if (
+      value !== "other" &&
+      e.target.tagName === "SELECT" &&
+      name === "electricity_board"
+    ) {
+      setIsOtherSelected(false);
+    }
+    dispatch(setElectricityForm({ [name]: value }));
+  };
 
   return (
     <>
       <Header PageIcon={ElectricityIcon} pageTitle={"Scope 2"} />
 
       <div className="flex flex-col main-container w-full px-10 py-6">
-       
         <div className="flex flex-col border border-gray-300 rounded-md mt-[18px] relative">
-        <TableMeta
+          <TableMeta
             recordType={electricityRecordType}
             totalCount={totalCount}
             openPopUpForm={openPopupForm}
@@ -332,31 +322,31 @@ const ElectricityPage = () => {
           />
           {manualEntry && (
             <>
-             <Table
-            headings={Object.keys(headingsToDataKeyMap)}
-            dataRows={dataRows}
-            paginationObject={paginationConfig}
-          />
-      <div className="flex w-fit py-4 px-2 absolute bottom-20 right-6 cursor-pointer">
-              
-              {/* Add */}
-              <AddIconBig    onClick={() => openPopupForm(electricityRecordType)}/>
-          
-          </div>
-         
-          {paginationConfig &&
-            paginationConfig?.paginationEnabled &&
-            paginationConfig?.handleItemsPerPage &&
-            typeof paginationConfig?.handleItemsPerPage === "function" &&
-            paginationConfig?.handlePageChange &&
-            typeof paginationConfig?.handlePageChange === "function" && (
-              <TablePagination paginationObject={paginationConfig} />
-            )} </>)}
+              {dataRows && (
+                <Table
+                  headings={Object.keys(headingsToDataKeyMap)}
+                  dataRows={dataRows}
+                  paginationObject={paginationConfig}
+                />
+              )}
+              <div className="flex w-fit py-4 px-2 absolute bottom-20 right-6 cursor-pointer">
+                {/* Add */}
+                <AddIconBig
+                  onClick={() => openPopupForm(electricityRecordType)}
+                />
+              </div>
+              {paginationConfig &&
+                paginationConfig?.paginationEnabled &&
+                paginationConfig?.handleItemsPerPage &&
+                typeof paginationConfig?.handleItemsPerPage === "function" &&
+                paginationConfig?.handlePageChange &&
+                typeof paginationConfig?.handlePageChange === "function" && (
+                  <TablePagination paginationObject={paginationConfig} />
+                )}{" "}
+            </>
+          )}
 
-
-
-            
-            {apiIntegration && (
+          {apiIntegration && (
             <>
               <h1>API Integration tab</h1>
             </>
@@ -374,23 +364,16 @@ const ElectricityPage = () => {
           closePurchasePopupForm={closePurchasePopupForm}
           isOtherSelected={isOtherSelected}
           startDate={startDate}
-         
-       
         />
       )}
       {isEditCopyFormOpen && (
         <PurchaseElectricityEditAndCopyForm
           selectedRowData={selectedRowData}
           closePurchasePopupForm={handleCloseEditCopyForms}
-          actionType= {actionType}
+          actionType={actionType}
           startDate={startDate}
         />
       )}
-    
-   
-
-   
-       
     </>
   );
 };

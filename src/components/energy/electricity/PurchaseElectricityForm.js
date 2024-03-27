@@ -1,11 +1,12 @@
 
 import { ReactComponent as CloseIcon } from "../../../app/assets/CloseIcon.svg";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  postElectricityData
-} from "../../../features/energy/electricity/electricityThunk";
+// import {
+//   postElectricityData
+// } from "../../../features/energy/electricity/electricityThunk";
 import CustomSelectBox from "../../Analyze/CustomSelectBox";
 import { useState } from "react";
+import { postElectricityData } from "../../../features/energy/electricity/electricityThunk";
 
 const PurchaseElecricityForm = ({
   handleFormChange,
@@ -18,12 +19,6 @@ const PurchaseElecricityForm = ({
 
   const [, setSelectedElectricityBoard] = useState("");
 
-  const [transactionTypeOptions] = useState([
-    "Purchased",
-    "Consumed",
-  ]);
-  const [currencyOptions] = useState(["INR", "USD"]);
-
   const handleElectricityBoardChange = (value) => {
     setSelectedElectricityBoard(value);
   };
@@ -31,8 +26,17 @@ const PurchaseElecricityForm = ({
   const electricityRecordType = useSelector(
     (state) => state.electricity.electricityRecordType
   );
-  const electricityResourcesType = useSelector(
-    (state) => state.electricity.electricityResourcesData
+  const transactionTypeOptions = useSelector(
+    (state) => state.electricity.electricityTransactionTypeData
+  );
+  const currencyOptions = useSelector(
+    (state) => state.electricity.currencyData
+  );
+  const unitOptions = useSelector(
+    (state) => state.electricity.unitData
+  );
+  const electricitySourcesData = useSelector(
+    (state) => state.electricity.electricitySourcesData
   );
   const electricity_boardOption = useSelector(
     (state) => state.electricity.electricity_boardData
@@ -139,40 +143,72 @@ const PurchaseElecricityForm = ({
 
               <div className="col-span-1 flex flex-col">
                 <label
-                  htmlFor="electricity_resource"
+                  htmlFor="electricity_source"
                   className="text-xs py-1.5"
                 >
                   Electricity Source<span className="text-red-500">*</span>
                 </label>
                 <select
-                  name="electricity_resource"
-                  value={formValue.electricity_resource || ""}
+                  name="electricity_source"
+                  value={formValue.electricity_source || ""}
                   onChange={handleFormChange}
                   required
                 >
                   <option value="" disabled>
                     Choose the source
                   </option>
-                  {electricityResourcesType &&
-                    electricityResourcesType.map((resource, index) => (
-                      <option key={resource.id} value={resource.name}>
-                        {resource.electricity_resource}
+                  {electricitySourcesData &&
+                    electricitySourcesData.map((source, index) => (
+                      <option key={source.id} value={source.id}>
+                        {source.electricity_source}
                       </option>
                     ))}
                 </select>
               </div>
-            
+              <div className="col-span-1 flex flex-col">
+                <label htmlFor="transaction_type" className="text-xs py-1.5">
+                  Transaction Type<span className="text-red-500">*</span>
+                </label>
+                <select
+                  value={formValue.transaction_type || ""}
+                  name="transaction_type"
+                  onChange={handleFormChange}
+                  required
+                  className="appearance-none block w-full bg-gray-50 text-neutral-700 text-xs border-0 py-1.5 px-4 leading-tight focus:outline-none"
+                >
+                  <option value="" disabled>
+                    Choose the type
+                  </option>
+                  {transactionTypeOptions.map((type, index) => (
+                    <option key={index} value={type.transaction_type}>
+                      {type.transaction_type}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <div className="col-span-1 flex flex-col">
                 <label htmlFor="electricity_board" className="text-xs py-1.5">
                   Electricity Board
                 </label>
-
-                <CustomSelectBox
-                  options={electricity_boardOption} // Update options as needed
+                <select
+                  // defaultValue={""}
+                  onChange={handleFormChange}
+                  required
                   value={formValue.electricity_board || ""}
-                  onSelectChange={handleElectricityBoardChange}
-                  handleFormChange={handleFormChange}
-                />
+                  name="electricity_board"
+                  className="appearance-none block w-full bg-gray-50 text-neutral-700 text-xs border-0 py-1.5 px-4 leading-tight focus:outline-none"
+                >
+                  <option value="" disabled>
+                    Choose the electricity_board
+                  </option>
+                  {electricity_boardOption &&
+                    electricity_boardOption.map((board, index) => (
+                      <option key={board.id} value={board.id}>
+                        {board.electricity_board}
+                      </option>
+                    ))}
+                </select>
+               
               </div>
 
               <div className="col-span-1 flex flex-col">
@@ -187,7 +223,7 @@ const PurchaseElecricityForm = ({
                   placeholder="Type the value"
                   onChange={handleFormChange}
                   min={"0"}
-                  required
+                  // required
                 />
               </div>
               <div className="col-span-1 flex flex-col">
@@ -197,7 +233,7 @@ const PurchaseElecricityForm = ({
                 <select
                   // defaultValue={""}
                   onChange={handleFormChange}
-                  required
+                  // required
                   value={formValue.unit || ""}
                   name="unit"
                   className="appearance-none block w-full bg-gray-50 text-neutral-700 text-xs border-0 py-1.5 px-4 leading-tight focus:outline-none"
@@ -205,32 +241,15 @@ const PurchaseElecricityForm = ({
                   <option value="" disabled>
                     Choose the unit
                   </option>
-                  <option value="Renewable">kWh</option>
-                  <option value="Joules">Joules </option>
-                  <option value="Gigajoules">Gigajoules </option>
-                  <option value="kilojoules">kilojoules </option>
+                  {unitOptions &&
+                    unitOptions.map((unit, index) => (
+                      <option key={unit.id} value={unit.id}>
+                        {unit.unit}
+                      </option>
+                    ))}
                 </select>
               </div>
-              <div className="col-span-1 flex flex-col">
-                <label htmlFor="transaction_type" className="text-xs py-1.5">
-                  Transaction Type<span className="text-red-500">*</span>
-                </label>
-                <select
-                  value={formValue.transaction_type || ""}
-                  name="transaction_type"
-                  onChange={handleFormChange}
-                  required
-                >
-                  <option value="" disabled>
-                    Choose the type
-                  </option>
-                  {transactionTypeOptions.map((type, index) => (
-                    <option key={index} value={type}>
-                      {type}
-                    </option>
-                  ))}
-                </select>
-              </div>
+             
               <div className="col-span-1 flex flex-col">
                 <label htmlFor="amount_paid" className="text-xs py-1.5">
                   Amount Paid<span className="text-red-500">*</span>
@@ -241,6 +260,8 @@ const PurchaseElecricityForm = ({
                   value={formValue.amount_paid || ""}
                   onChange={handleFormChange}
                   min={"0"}
+                  placeholder="Type the value"
+                  className="appearance-none block w-full bg-gray-50 text-neutral-700 text-xs border-0 py-1.5 px-4 leading-tight focus:outline-none"
                   required
                 />
               </div>
@@ -253,13 +274,14 @@ const PurchaseElecricityForm = ({
                   name="currency"
                   onChange={handleFormChange}
                   required
+                  className="appearance-none block w-full bg-gray-50 text-neutral-700 text-xs border-0 py-1.5 px-4 leading-tight focus:outline-none"
                 >
                   <option value="" disabled>
                     Choose the currency
                   </option>
                   {currencyOptions.map((currency, index) => (
-                    <option key={index} value={currency}>
-                      {currency}
+                    <option key={index} value={currency.id}>
+                      {currency.currency}
                     </option>
                   ))}
                 </select>
@@ -274,6 +296,8 @@ const PurchaseElecricityForm = ({
                   name="emission_factor"
                   value={formValue.emission_factor || ""}
                   onChange={handleFormChange}
+                  className="appearance-none block w-full bg-gray-50 text-neutral-700 text-xs border-0 py-1.5 px-4 leading-tight focus:outline-none"
+                  placeholder="Type the value"
                 />
               </div>
               <div className="col-span-1 flex flex-col">
@@ -287,6 +311,7 @@ const PurchaseElecricityForm = ({
                   accept=".jpg, .jpeg, .png, .pdf, .zip"
                   onChange={handleFormChange}
                   required
+                  className="appearance-none block w-full bg-gray-50 text-neutral-700 text-xs border-0 py-1.5 px-4 leading-tight focus:outline-none"
                 />
               </div>
             </div>

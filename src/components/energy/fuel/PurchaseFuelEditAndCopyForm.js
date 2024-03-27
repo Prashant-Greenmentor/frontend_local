@@ -435,7 +435,7 @@ const PurchaseFuelEditAndCopyForm = ({
                   className="appearance-none block w-full bg-gray-50 text-neutral-700 text-xs border-0 py-1.5 px-4 leading-tight focus:outline-none"
                   placeholder="Upload PNG,JPEG,PDF,.zip"
                   onChange={handleFormChange}
-                  required
+                  // required
                 />
               </div>
             </div>

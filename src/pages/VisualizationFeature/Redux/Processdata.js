@@ -1124,7 +1124,7 @@ function processData(Inputdata, timeInterval, breakpoint, year) {
               break;
 
           case "Month":
-              const monthKey = `${year}-${getMonthName(month)}`;
+              const monthKey = `${year}-${(month)}`;
               if (!processedData[monthKey]) {
                   processedData[monthKey] = {};
               }
@@ -1214,7 +1214,7 @@ function processDataForSourceType(Inputdata, timeInterval,breakpoint,year) {
          };
        }
      case "Month":
-       const monthKey = `${year}-${getMonthName(month)}`;
+       const monthKey = `${year}-${month}`;
        if (!processedData[monthKey]) {
          processedData[monthKey] = {};
        }
@@ -1354,6 +1354,18 @@ const generatePieChartOptions = (text,filteredData, breaktype,currentFinancialYe
       text,
       left: "center",
     },
+    toolbox: {
+      show: true,
+      orient: 'vertical',
+      left: 'right',
+      top: 'center',
+      feature: {
+        mark: { show: true },
+        dataView: { show: true, readOnly: true },
+        restore: { show: true }, // Ensure that the restore feature is enabled
+        saveAsImage: { show: true },
+      },
+    },
     tooltip: {
       trigger: "item",
       formatter: (params) => {
@@ -1413,7 +1425,7 @@ const generateChartOption = (titleText, legendData, xAxisLabels, series) => {
       feature: {
         mark: { show: true },
         dataView: { show: true, readOnly: true },
-        magicType: { show: true, type: ['line', 'bar'] },
+       
         restore: { show: true },
         saveAsImage: { show: true },
       },
@@ -1426,7 +1438,7 @@ const generateChartOption = (titleText, legendData, xAxisLabels, series) => {
       },
     },
     legend: {
-      selectedMode: !legendData,
+     
       top: 'bottom',
     },
     labelLine: {
@@ -1491,6 +1503,19 @@ const generateStackedChartOptions = (
 
   return {
     title: { text: "Sitewise Emissions", left: "center" },
+    toolbox: {
+      show: true,
+      orient: 'vertical',
+      left: 'right',
+      top: 'center',
+      feature: {
+        mark: { show: true },
+        dataView: { show: true, readOnly: true },
+       
+        restore: { show: true },
+        saveAsImage: { show: true },
+      },
+    },
     tooltip: {
       trigger: "item",
       formatter: function (params) {
@@ -1608,6 +1633,18 @@ const generateOptionforSunburst = (InputData, currentFinancialYear) => {
 
   // Generate option for the sunburst chart
   const option = {
+    toolbox: {
+      show: true,
+      orient: 'vertical',
+      left: 'right',
+      top: 'center',
+      feature: {
+        mark: { show: true },
+        dataView: { show: true, readOnly: true },
+        restore: { show: true }, // Ensure that the restore feature is enabled
+        saveAsImage: { show: true },
+      },
+    },
     tooltip: {},
     // visualMap: {
       // type: 'piecewise',

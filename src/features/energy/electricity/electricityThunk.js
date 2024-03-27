@@ -8,48 +8,49 @@ import {
   setTotalCount,
   setTotalPages,
   setCurrencyData,
-  setElectricityTypeData,
   setSiteData,
-  setSourceTypeData,
   setUnitData,
-  setUseTypeData,
   addElectricityData,
+  setElectricitySourceTypeData,
+  setElectricityTransactionTypeData,
+  setElectricityInputRecords,
+  setElectricityForm,
 } from "./electricitySlice";
 import { toast } from "react-toastify";
-import { resetFuelForm } from "../fuel/fuelSlice";
-export const fetchElectricityData = createAsyncThunk(
-  "electricity/fetchELECTRICITYData",
-  async (_, { getState, thunkAPI }) => {
-    const { dispatch } = thunkAPI;
+import {
+  setElecricityData,
+  setElectricitySourceOptions,
+  setSiteOptions,
+  setTransactionTypeOptions,
+  setdataForCurrentYearChange,
+} from "../../../pages/VisualizationFeature/Redux/chartSlice";
+import { PASSWORD, USERNAME } from "../../../appconfig";
+
+
+export const fetchElectricityInputData = createAsyncThunk(
+  "electricity/fetchElectricityInputData",
+  async (_, { getState, dispatch }) => {
     dispatch(setIsLoading(true));
     const accessToken = getState().auth.accessToken;
-    const electricityRecordType = getState().electricity.electricityRecordType;
-    let apiUrl = "";
-    if (electricityRecordType === 1) {
-      apiUrl = "/energy/electricity/1/purchased-electricity";
-    } else {
-      apiUrl = "/energy/electricity/1/inventory-electricity";
-    }
+
+    let apiUrl = "/energy/electricity/electricity-input-data";
+
     try {
-      // const response = await api.get(`${apiUrl}`, {
-      //   headers: {
-      //     Authorization: `Bearer ${accessToken}`,
-      //   },
-      // });
-
-      //   set all data ElectricityREcords, pageDetails, totalCount etc.
-
-      // if (response.status === 200 && response.success) {
-        // dispatch(setElectricityRecords(response.data.data));
-        // dispatch(setCurrentPage(response.data.currentPage));
+      const response = await api.get(`${apiUrl}`, {
+        //   headers: {
+        //     Authorization: `Bearer ${accessToken}`,
+        //   },
+      });
+   
+      if (response.status === 200 && response.data.success) {
+        dispatch(setElectricityRecords(response.data));
+          // dispatch(setCurrentPage(response.data.currentPage));
         // dispatch(setItemsPerPage(response.data.itemsPerPage));
         // dispatch(setTotalPages(response.data.totalPages));
         // dispatch(setTotalCount(response.data.totalCount));
-      // }
-
-      //   return response.data;
+        // return response
+      }
     } catch (error) {
-      // Handle other API call errors
       console.error("Error fetching data:", error);
       throw error;
     } finally {
@@ -60,20 +61,21 @@ export const fetchElectricityData = createAsyncThunk(
 
 export const fetchSiteData = createAsyncThunk(
   "electricity/fetchSiteData",
-  async (_, { getState, thunkAPI }) => {
-    const { dispatch } = thunkAPI;
+  async (_, { getState, dispatch }) => {
     dispatch(setIsLoading(true));
     const accessToken = getState().auth.accessToken;
+    let organization_id = 1;
     try {
-      const response = await api.get(`/energy/electricity/site-data`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      const response = await api.get(
+        `/energy/electricity/${organization_id}/sites`,
+        {
+          // headers: {
+          //   Authorization: `Bearer ${accessToken}`,
+          // },
+        }
+      );
 
-      //   set all data ElectricityREcords, pageDetails, totalCount etc.
-
-      if (response.status === 200 && response.success) {
+      if (response.status === 200 && response.data.success) {
         dispatch(setSiteData(response.data.data));
       }
 
@@ -87,113 +89,82 @@ export const fetchSiteData = createAsyncThunk(
     }
   }
 );
-export const fetchElectricityTypeData = createAsyncThunk(
-  "electricity/fetchElectricityTypeData",
-  async (_, { getState, thunkAPI }) => {
-    const { dispatch } = thunkAPI;
+export const fetchElectricitySourcesTypeData = createAsyncThunk(
+  "electricity/fetchElectricitySourcesTypeData",
+  async (_, { getState, dispatch }) => {
     dispatch(setIsLoading(true));
     const accessToken = getState().auth.accessToken;
     try {
       const response = await api.get(
-        `/energy/electricity/electricity-type-data`,
+        `/energy/electricity/electricity-sources`
+        // {
+        //   headers: {
+        //     Authorization: `Bearer ${accessToken}`,
+        //   },
+        // }
+      );
+
+      if (response.status === 200 && response.data.success) {
+        dispatch(setElectricitySourceTypeData(response.data.data));
+      }
+
+      //   return response.data;
+    } catch (error) {
+      // Handle other API call errors
+      console.error("Error fetching data:", error);
+      throw error;
+    } finally {
+      dispatch(setIsLoading(false));
+    }
+  }
+);
+
+export const fetchUnitData = createAsyncThunk(
+  "electricity/fetchUnitData",
+  async (_, { getState, dispatch }) => {
+    dispatch(setIsLoading(true));
+    const accessToken = getState().auth.accessToken;
+    try {
+      const response = await api.get(`/energy/electricity/units`, {
+        // headers: {
+        //   Authorization: `Bearer ${accessToken}`,
+        // },
+      });
+
+      if (response.status === 200 && response.data.success) {
+        dispatch(setUnitData(response.data.data));
+      }
+
+      //   return response.data;
+    } catch (error) {
+      // Handle other API call errors
+      console.error("Error fetching data:", error);
+      throw error;
+    } finally {
+      dispatch(setIsLoading(false));
+    }
+  }
+);
+export const fetchTransactionTypeData = createAsyncThunk(
+  "electricity/fetchTransactionTypeData",
+  async (electricity_source_id, { getState, dispatch }) => {
+    dispatch(setIsLoading(true));
+    const accessToken = getState().auth.accessToken;
+    const { id, ...electricityForm } = getState().electricity.electricityForm;
+    // let electricity_source_id=electricityForm.electricity_source
+    try {
+      const response = await api.get(
+        `/energy/electricity/${electricity_source_id}/transaction-types`,
         {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
+          // headers: {
+          //   Authorization: `Bearer ${accessToken}`,
+          // },
         }
       );
 
-      //   set all data ElectricityREcords, pageDetails, totalCount etc.
-
-      if (response.status === 200 && response.success) {
-        dispatch(setElectricityTypeData(response.data.data));
-      }
-
-      //   return response.data;
-    } catch (error) {
-      // Handle other API call errors
-      console.error("Error fetching data:", error);
-      throw error;
-    } finally {
-      dispatch(setIsLoading(false));
-    }
-  }
-);
-export const fetchSourceTypeData = createAsyncThunk(
-  "electricity/fetchSourceTypeData",
-  async (_, { getState, thunkAPI }) => {
-    const { dispatch } = thunkAPI;
-    dispatch(setIsLoading(true));
-    const accessToken = getState().auth.accessToken;
-    try {
-      const response = await api.get(`/energy/electricity/source-type-data`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-
-      //   set all data ElectricityREcords, pageDetails, totalCount etc.
-
-      if (response.status === 200 && response.success) {
-        dispatch(setSourceTypeData(response.data.data));
-      }
-
-      //   return response.data;
-    } catch (error) {
-      // Handle other API call errors
-      console.error("Error fetching data:", error);
-      throw error;
-    } finally {
-      dispatch(setIsLoading(false));
-    }
-  }
-);
-export const fetchUseTypeData = createAsyncThunk(
-  "electricity/fetchUseTypeData",
-  async (_, { getState, thunkAPI }) => {
-    const { dispatch } = thunkAPI;
-    dispatch(setIsLoading(true));
-    const accessToken = getState().auth.accessToken;
-    try {
-      const response = await api.get(`/energy/electricity/use-type-data`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-
-      //   set all data ElectricityREcords, pageDetails, totalCount etc.
-
-      if (response.status === 200 && response.success) {
-        dispatch(setUseTypeData(response.data.data));
-      }
-
-      //   return response.data;
-    } catch (error) {
-      // Handle other API call errors
-      console.error("Error fetching data:", error);
-      throw error;
-    } finally {
-      dispatch(setIsLoading(false));
-    }
-  }
-);
-export const fetchUnitData = createAsyncThunk(
-  "electricity/fetchUnitData",
-  async (_, { getState, thunkAPI }) => {
-    const { dispatch } = thunkAPI;
-    dispatch(setIsLoading(true));
-    const accessToken = getState().auth.accessToken;
-    try {
-      const response = await api.get(`/energy/electricity/unit-data`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-
-      //   set all data ElectricityREcords, pageDetails, totalCount etc.
-
-      if (response.status === 200 && response.success) {
-        dispatch(setUnitData(response.data.data));
+      console.log(response.data.data);
+      if (response.status === 200 && response.data.success) {
+        dispatch(setElectricityTransactionTypeData(response.data.data));
       }
 
       //   return response.data;
@@ -208,20 +179,18 @@ export const fetchUnitData = createAsyncThunk(
 );
 export const fetchCurrencyData = createAsyncThunk(
   "electricity/fetchCurrencyData",
-  async (_, { getState, thunkAPI }) => {
-    const { dispatch } = thunkAPI;
+  async (_, { getState, dispatch }) => {
     dispatch(setIsLoading(true));
     const accessToken = getState().auth.accessToken;
     try {
-      const response = await api.get(`/energy/electricity/currency-data`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
+      const response = await api.get(`/energy/electricity/currencies`, {
+        // headers: {
+        //   Authorization: `Bearer ${accessToken}`,
+        // },
       });
 
-      //   set all data ElectricityREcords, pageDetails, totalCount etc.
-
-      if (response.status === 200 && response.success) {
+      console.log(response.data.data);
+      if (response.status === 200 && response.data.success) {
         dispatch(setCurrencyData(response.data.data));
       }
 
@@ -240,20 +209,21 @@ export const postElectricityData = createAsyncThunk(
   async (_, { getState, dispatch }) => {
     dispatch(setIsLoading(true));
     const accessToken = getState().auth.accessToken;
-    const { id,...electricityForm } = getState().electricity.electricityForm;
-   dispatch(addElectricityData(electricityForm))
+    const { id, ...electricityForm } = getState().electricity.electricityForm;
+    console.log(electricityForm,"elelctricity form");
     try {
       const response = await api.post(
-        `/energy/electricity/data`,
-        electricityForm,
+        `/energy/electricity/1/data/`,
+        { ...electricityForm, source_type: "Renewable" },
         {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
+          // headers: {
+          //   Authorization: `Bearer ${accessToken}`,
+          // },
         }
       );
+      console.log(response);
       if (response.status === 200 || response.status === 201) {
-        dispatch(fetchElectricityData());
+        dispatch(fetchElectricityInputData());
         toast.success("Record created successfully", {
           theme: "dark",
         });
@@ -265,7 +235,47 @@ export const postElectricityData = createAsyncThunk(
       });
     } finally {
       dispatch(setIsLoading(false));
-      dispatch(resetFuelForm());
+    }
+  }
+);
+export const electricityUploadEvidence = createAsyncThunk(
+  "electricity/electricityUploadEvidence",
+  async (files, { getState, dispatch }) => {
+    dispatch(setIsLoading(true));
+    const formData = new FormData();
+      for (let i = 0; i < files.length; i++) {
+        formData.append("files", files[i]);
+      }
+    const accessToken = getState().auth.accessToken;
+    let organization_id = 1;
+    try {
+      const response = await api.post(
+        `/energy/electricity/${organization_id}/data/evidence`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Basic ${btoa(USERNAME + ":" + PASSWORD)}`,
+          },
+        }
+      );
+  
+      if (response.status === 200 || response.status === 201) {
+       
+        dispatch(setIsLoading(false));
+
+        dispatch(setElectricityForm({ evidence: response?.data?.path }));
+        toast.success("Evidence Uploded successfully", {
+          theme: "dark",
+        });
+      }
+    } catch (error) {
+      console.error("Error uploading evidence", error);
+      toast.error("uploading evidence failed", {
+        theme: "dark",
+      });
+    } finally {
+      dispatch(setIsLoading(false));
     }
   }
 );
@@ -275,22 +285,21 @@ export const updateElectricityData = createAsyncThunk(
   async (_, { getState, dispatch }) => {
     dispatch(setIsLoading(true));
     const accessToken = getState().auth.accessToken;
-    const { electricityForm } = getState().electricity;
-    const { id } = electricityForm;
+    const {id,...electricityForm } = getState().electricity.electricityForm;
+    console.log(electricityForm,id )
 
     try {
-      const response = await api.post(
-        `/energy/electricity/data/${id}`,
+      const response = await api.put(
+        `/energy/electricity/1/data/${id}`,
         electricityForm,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
+        // {
+        //   headers: {
+        //     Authorization: `Bearer ${accessToken}`,
+        //   },
+        // }
       );
 
       if (response.status === 200 || response.status === 201) {
-        dispatch(fetchElectricityData());
         toast.success("Record updated successfully", {
           theme: "dark",
         });
@@ -302,7 +311,6 @@ export const updateElectricityData = createAsyncThunk(
       });
     } finally {
       dispatch(setIsLoading(false));
-      dispatch(resetFuelForm());
     }
   }
 );

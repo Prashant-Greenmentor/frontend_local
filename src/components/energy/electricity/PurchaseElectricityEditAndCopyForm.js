@@ -1,13 +1,14 @@
 
 import { ReactComponent as CloseIcon } from "../../../app/assets/CloseIcon.svg";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  postElectricityData
-} from "../../../features/energy/electricity/electricityThunk";
+// import {
+//   postElectricityData
+// } from "../../../features/energy/electricity/electricityThunk";
 import CustomSelectBox from "../../Analyze/CustomSelectBox";
 import { useEffect, useState } from "react";
 import { setElectricityForm } from "../../../features/energy/electricity/electricitySlice";
 import { toast } from "react-toastify";
+import { electricityUploadEvidence, fetchElectricityInputData, fetchTransactionTypeData, postElectricityData, updateElectricityData } from "../../../features/energy/electricity/electricityThunk";
 
 const PurchaseElectricityEditAndCopyForm = ({
 
@@ -33,8 +34,8 @@ const PurchaseElectricityEditAndCopyForm = ({
   const electricityRecordType = useSelector(
     (state) => state.electricity.electricityRecordType
   );
-  const electricityResourcesType = useSelector(
-    (state) => state.electricity.electricityResourcesData
+  const electricitySourcesData = useSelector(
+    (state) => state.electricity.electricitySourcesData
   );
   const currencyData = useSelector(
     (state) => state.electricity.currencyData
@@ -50,14 +51,17 @@ const PurchaseElectricityEditAndCopyForm = ({
   );
   const handleFormChange = (e) => {
     const { name, value, type } = e.target;
+    if (name == "electricity_source") {
+      dispatch(fetchTransactionTypeData(value));
+    }
     if (type === "file") {
       const files = e.target.files;
       if (!files) {
         toast("Please select a file");
         return;
       }
-      setFormData({ ...formData, [name]: files[0] });
-      // dispatch(fetchUploadFuelEvidence(files));
+      // setFormData({ ...formData, [name]: files[0] });
+      dispatch(electricityUploadEvidence(files));
     } else {
       setFormData({ ...formData, [name]: value });
       dispatch(setElectricityForm({ ...formData, [name]: value }));
@@ -68,10 +72,10 @@ const PurchaseElectricityEditAndCopyForm = ({
 
     const form = document.querySelector("#purchase-electricity-form");
     if (form.length && form.checkValidity()) {
-      console.log(actionType)
+      
       switch (actionType) {
         case "edit":
-          // dispatch(updateElectricityData());
+          dispatch(updateElectricityData());
           break;
         case "copy":
           dispatch(postElectricityData());
@@ -85,8 +89,8 @@ const PurchaseElectricityEditAndCopyForm = ({
       form.querySelector('input[type="submit"]').click();
     }
   };
-  console.log(actionType,formValue,formData)
   useEffect(() => {
+   
     if (
       selectedRowData
     ) {
@@ -94,22 +98,23 @@ const PurchaseElectricityEditAndCopyForm = ({
         ...selectedRowData,
         site:
           siteData.length > 0 &&
-          siteData.find((s) => (s.site?.toLowerCase() === selectedRowData.site?.toLowerCase())?.id||""),
+          siteData.find((s) => (s.site?.toLowerCase() === selectedRowData.site?.toLowerCase()))?.id||"",
         currency:
           currencyData.length > 0 &&
-          currencyData.find((s) => (s.currency?.toLowerCase() === selectedRowData.currency?.toLowerCase())?.id||""),
+          currencyData.find((s) => (s.currency?.toLowerCase() === selectedRowData.currency?.toLowerCase()))?.id||"",
         electricity_board:
           electricity_boardOption.length > 0 &&
           electricity_boardOption.find((s) => (s.electricity_board?.toLowerCase() === selectedRowData.electricity_board?.toLowerCase())
-            ?.id||""),
+            )?.id||"",
         unit:
           unitData.length > 0 &&
-          unitData.find((s) => (s.unit?.toLowerCase() === selectedRowData.unit?.toLowerCase())?.id||""),
-          electricity_resource:
-          electricityResourcesType.length > 0 &&
-          electricityResourcesType.find((s) => (s.electricity_resource?.toLowerCase() === selectedRowData.electricity_resource?.toLowerCase())?.id||""),
+          unitData.find((s) => (s.unit?.toLowerCase() === selectedRowData.unit?.toLowerCase()))?.id||"",
+          electricity_source:
+          electricitySourcesData.length > 0 &&
+          electricitySourcesData.find((s) => (s.electricity_source?.toLowerCase() === selectedRowData.electricity_source?.toLowerCase()))?.id||"",
         };
         //  setFormValues()
+      
         setFormData((prevFormData) => {
           return { ...prevFormData, ...UpdateDataForPopulate };
         });
@@ -214,82 +219,28 @@ const PurchaseElectricityEditAndCopyForm = ({
 
               <div className="col-span-1 flex flex-col">
                 <label
-                  htmlFor="electricity_resource"
+                  htmlFor="electricity_source"
                   className="text-xs py-1.5"
                 >
                   Electricity Source<span className="text-red-500">*</span>
                 </label>
                  <select
-                  name="electricity_resource"
+                  name="electricity_source"
                   className="appearance-none block w-full bg-gray-50 text-neutral-700 text-xs border-0 py-1.5 px-4 leading-tight focus:outline-none"
 
-                  value={formValue.electricity_resource || ""}
+                  value={formValue.electricity_source || ""}
                   onChange={handleFormChange}
                   required
                 >
                   <option value="" disabled>
                     Choose the source
                   </option>
-                  {electricityResourcesType &&
-                    electricityResourcesType.map((resource, index) => (
-                      <option key={resource.id} value={resource.id}>
-                        {resource.electricity_resource}
+                  {electricitySourcesData &&
+                    electricitySourcesData.map((source, index) => (
+                      <option key={source.id} value={source.id}>
+                        {source.electricity_source}
                       </option>
                     ))}
-                </select>
-              </div>
-              
-              <div className="col-span-1 flex flex-col">
-                <label htmlFor="electricity_board" className="text-xs py-1.5">
-                  Electricity Board
-                </label>
-
-              <CustomSelectBox
-                  options={electricity_boardOption} // Update options as needed
-                  value={formValue.electricity_board || ""}
-                  onSelectChange={handleElectricityBoardChange}
-                  handleFormChange={handleFormChange}
-                /> 
-              </div>
-
-              
-             
-            
-              <div className="col-span-1 flex flex-col">
-                <label htmlFor="unit_used" className="text-xs py-1.5">
-                  Unit Used
-                </label>
-                <input
-                  type="number"
-                  value={formValue.unit_used || ""}
-                  name="unit_used"
-                  className="appearance-none block w-full bg-gray-50 text-neutral-700 text-xs border-0 py-1.5 px-4 leading-tight focus:outline-none"
-                  placeholder="Type the value"
-                  onChange={handleFormChange}
-                  min={"0"}
-                  required
-                />
-              </div>
-              <div className="col-span-1 flex flex-col">
-                <label htmlFor="unit" className="text-xs py-1.5">
-                  Unit
-                </label>
-                <select
-                  // defaultValue={""}
-                  onChange={handleFormChange}
-                  required
-                  value={formValue.unit||""}
-                  name="unit"
-                  className="appearance-none block w-full bg-gray-50 text-neutral-700 text-xs border-0 py-1.5 px-4 leading-tight focus:outline-none"
-                >
-                  <option value="" disabled>
-                    Choose the unit
-                  </option>
-                  {unitData?.map((type, index) => (
-                    <option key={index} value={type.id}>
-                      {type.unit}
-                    </option>
-                  ))}
                 </select>
               </div>
               <div className="col-span-1 flex flex-col">
@@ -314,6 +265,71 @@ const PurchaseElectricityEditAndCopyForm = ({
                   ))}
                 </select>
               </div>
+              <div className="col-span-1 flex flex-col">
+                <label htmlFor="electricity_board" className="text-xs py-1.5">
+                  Electricity Board
+                </label>
+                <select
+                  // defaultValue={""}
+                  onChange={handleFormChange}
+                  required
+                  value={formValue.electricity_board || ""}
+                  name="electricity_board"
+                  className="appearance-none block w-full bg-gray-50 text-neutral-700 text-xs border-0 py-1.5 px-4 leading-tight focus:outline-none"
+                >
+                  <option value="" disabled>
+                    Choose the electricity_board
+                  </option>
+                  {electricity_boardOption &&
+                    electricity_boardOption.map((board, index) => (
+                      <option key={board.id} value={board.id}>
+                        {board.electricity_board}
+                      </option>
+                    ))}
+                </select>
+              </div>
+
+              
+             
+            
+              <div className="col-span-1 flex flex-col">
+                <label htmlFor="unit_used" className="text-xs py-1.5">
+                  Unit Used
+                </label>
+                <input
+                  type="number"
+                  value={formValue.unit_used || ""}
+                  name="unit_used"
+                  className="appearance-none block w-full bg-gray-50 text-neutral-700 text-xs border-0 py-1.5 px-4 leading-tight focus:outline-none"
+                  placeholder="Type the value"
+                  onChange={handleFormChange}
+                  min={"0"}
+                  // required
+                />
+              </div>
+              <div className="col-span-1 flex flex-col">
+                <label htmlFor="unit" className="text-xs py-1.5">
+                  Unit
+                </label>
+                <select
+                  // defaultValue={""}
+                  onChange={handleFormChange}
+                  required
+                  value={formValue.unit||""}
+                  name="unit"
+                  className="appearance-none block w-full bg-gray-50 text-neutral-700 text-xs border-0 py-1.5 px-4 leading-tight focus:outline-none"
+                >
+                  <option value="" disabled>
+                    Choose the unit
+                  </option>
+                  {unitData?.map((type, index) => (
+                    <option key={index} value={type.id}>
+                      {type.unit}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              
               <div className="col-span-1 flex flex-col">
                 <label htmlFor="amount_paid" className="text-xs py-1.5">
                   Amount Paid<span className="text-red-500">*</span>
@@ -378,7 +394,7 @@ const PurchaseElectricityEditAndCopyForm = ({
                   multiple
                   accept=".jpg, .jpeg, .png, .pdf, .zip"
                   onChange={handleFormChange}
-                  required
+                  // required
                 />
               </div>
             </div>

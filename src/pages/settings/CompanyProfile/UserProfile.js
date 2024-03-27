@@ -49,9 +49,14 @@ function CompanyProfile() {
             <div className="w-24 h-24 object-cover">
               <img
                 className="rounded-full flex flex-shrink-0"
-                src={'https://img.freepik.com/premium-vector/personas-icon_1076610-12224.jpg?w=740'}
+                src={userImage}
                 alt="user"
               />
+            </div>
+            <div>
+              <p className="text-[#384D6C] font-semibold">Amish Singh</p>
+              <p className="text-[#6B7280]">Manager</p>
+              <p className="text-[#6B7280]">Company Name</p>
             </div>
           </div>
           <div className="p-2 px-4 flex space-x-4 items-center">
@@ -75,9 +80,9 @@ function CompanyProfile() {
         </div>
         <div className=" mt-4 grid grid-cols-1 md:grid-cols-2 gap-2">
           <InputField
-            label={"Company Name"}
-            name={"companyName"}
-            placeholder={"Enter your company name"}
+            label={"First Name"}
+            name={"firstName"}
+            placeholder={"Enter your first name"}
             value={companyProfileForm.firstName}
             onChange={onChange}
             type="text"
@@ -85,9 +90,9 @@ function CompanyProfile() {
             decorationClassName="hidden"
           />
           <InputField
-            label={"Year of  Incorporation"}
-            name={"yearIncorporated"}
-            placeholder={"YYYY"}
+            label={"Last Name"}
+            name={"lastName"}
+            placeholder={"Enter your Last name"}
             value={companyProfileForm.lastName}
             onChange={onChange}
             type="text"

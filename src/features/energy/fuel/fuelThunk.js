@@ -299,6 +299,7 @@ export const fetchUploadFuelEvidence = createAsyncThunk(
       for (let i = 0; i < files.length; i++) {
         formData.append("files", files[i]);
       }
+      console.log(files)
       const fuel_record_type = getState().fuel.fuelRecordType;
 
       const response = await axios.post(

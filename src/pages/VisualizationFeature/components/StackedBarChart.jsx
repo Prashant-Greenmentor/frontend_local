@@ -99,9 +99,11 @@ const StackedBarChart = ({
       <ReactECharts
         option={{ ...options }}
         style={{ height: "500px", width: "100%" }}
-        onEvents={{
-          legendselectchanged: onLegendSelectChanged,
-        }}
+        // onEvents={{
+        //   legendselectchanged: onLegendSelectChanged,
+        // }}
+        notMerge={true}
+  lazyUpdate={true}
       />
     </>
   );

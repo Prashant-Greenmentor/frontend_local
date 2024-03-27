@@ -41,15 +41,12 @@ function AnalyzeScope2() {
       [name]: value
     }));
   };
-
+console.log(electricityData)
   useEffect(() => {
     setEmissonChange(currentYearLastYearEmissionDetail(dataForCurrentYearChange, 2023));
     setrenewableEnergy(calculateRenewableEnergyUsageChange(dataForCurrentYearChange, 2023));
     setEnergyChange(calculateEnergyUsageChange(dataForCurrentYearChange, 2023));
   }, [electricityData, dataForCurrentYearChange]);
-  useEffect(() => {
-    dispatch(fetchChartElectricityDataThunk());
-  }, [dispatch]);
   const emissionData = [
     {
       title: "Emissions",
@@ -79,7 +76,9 @@ function AnalyzeScope2() {
         : ""}`
     }
   ];
-
+useEffect(()=>{
+ dispatch(fetchChartElectricityDataThunk())
+},[])
   return (
     <>
       <Header PageIcon={ElectricityIcon} pageTitle={"Scope 2"} />
